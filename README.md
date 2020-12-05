@@ -1,2 +1,2 @@
-# FLutter Mobile Application Development
- My Flutter Pracice codebase
+# Flutter Mobile Application Development
+ My Flutter Practice codebase
