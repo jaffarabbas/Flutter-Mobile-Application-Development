@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import './question.dart';
+import './quiz.dart';
+import './result.dart';
 
 void main() {
   runApp(MyApp());
@@ -13,21 +14,52 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  var _count = 0;
-  var answer = [
-    'This is Question one ',
-    'this is Question 2',
-    'this is Question 3'
+  var count = 0;
+  var totalScore = 0;
+
+  final question = [
+    {
+      'questiontext': 'whats your Namme ? ',
+      'answer': [
+        {'text': 'jaffar', 'score': 10},
+        {'text': 'rrrr', 'score': 5},
+        {'text': 'dsfsdf', 'score': 9},
+        {'text': 'asmi', 'score': 0}
+      ]
+    },
+    {
+      'questiontext': 'whats your car ? ',
+      'answer': [
+        {'text': 'lamborgini', 'score': 10},
+        {'text': 'farari', 'score': 5},
+        {'text': 'tesla', 'score': 9},
+        {'text': 'jaguar', 'score': 0}
+      ]
+    },
+    {
+      'questiontext': 'whats your age ? ',
+      'answer': [
+        {'text': '21', 'score': 10},
+        {'text': '22', 'score': 5},
+        {'text': '23', 'score': 9},
+        {'text': '20', 'score': 0}
+      ]
+    }
   ];
   // ignore: non_constant_identifier_names
-  void CLickedButton() {
+  void CLickedButton(int score) {
+    totalScore += score;
     setState(() {
-      _count += 1;
-      if (_count >= 3) {
-        _count = 0;
-      }
+      count += 1;
     });
-    print(_count);
+    print(count);
+  }
+
+  void resetQuiz() {
+    setState(() {
+      count = 0;
+      totalScore = 0;
+    });
   }
 
   @override
@@ -37,25 +69,12 @@ class _MyAppState extends State<MyApp> {
         appBar: AppBar(
           title: Text('Dark'),
         ),
-        body: Column(
-          children: [
-            Question(answer[_count]),
-            RaisedButton(
-              child: Text('Answer 1'),
-              onPressed: CLickedButton,
-            ),
-            RaisedButton(
-              child: Text('Answer 2'),
-              onPressed: CLickedButton,
-            ),
-            RaisedButton(
-              child: Text('Answer 3'),
-              onPressed: () {
-                print('Answer 3');
-              },
-            ),
-          ],
-        ),
+        body: count < question.length
+            ? Quiz(
+                answerQuestion: CLickedButton,
+                questionIndex: count,
+                questions: question)
+            : Result(totalScore,resetQuiz),
       ),
     );
   }
