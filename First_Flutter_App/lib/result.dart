@@ -4,7 +4,7 @@ class Result extends StatelessWidget {
   final int score;
   final Function reset;
 
-  Result(this.score,this.reset);
+  Result(this.score, this.reset);
 
   String get result {
     String message;
@@ -19,7 +19,7 @@ class Result extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Column(  
+      child: Column(
         children: <Widget>[
           Text(result,
               style: TextStyle(fontSize: 36, fontWeight: FontWeight.bold)),
