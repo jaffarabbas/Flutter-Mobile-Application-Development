@@ -24,6 +24,14 @@ class _HomepageState extends State<Homepage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Expense Traker'),
+        actions: [
+          IconButton(
+            onPressed: () {
+              null;
+            },
+            icon: Icon(Icons.add),
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -42,6 +50,13 @@ class _HomepageState extends State<Homepage> {
             UserTransaction(),
           ],
         ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add),
+        onPressed: () {
+          null;
+        },
       ),
     );
   }
