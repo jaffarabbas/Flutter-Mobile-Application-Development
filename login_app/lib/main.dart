@@ -11,7 +11,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
      return MaterialApp(
        debugShowCheckedModeBanner: false,
-       title: 'Login Page',
+       title: 'Login',
        theme: ThemeData(
          fontFamily: GoogleFonts.roboto().fontFamily,
        ),
