@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:widgits_practice/widgits/drawer.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -18,12 +19,12 @@ class HomePage extends StatelessWidget {
               style: TextStyle(
                 fontSize: 30,
                 fontWeight: FontWeight.bold,
-                color: Colors.cyan
+                color: Colors.deepPurple
               ),
             ),
           ),
         ),
-        drawer: Drawer(),
+        drawer: AppDrawer(),
       );
   }
 }
