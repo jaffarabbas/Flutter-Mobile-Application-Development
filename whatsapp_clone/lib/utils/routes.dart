@@ -1,4 +1,5 @@
 class AppRoutes{
-  static String chatRoute = '/chatPage';
+  static String loginRoute = '/login';
   static String homeRoute = '/home';
+  static String chatRoute = '/chatPage';
 }
