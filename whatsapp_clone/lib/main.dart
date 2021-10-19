@@ -3,8 +3,8 @@
 import 'package:flutter/material.dart';
 import 'package:whatsapp_clone/pages/chat_page.dart';
 import 'package:whatsapp_clone/pages/home_page.dart';
+import 'package:whatsapp_clone/pages/login_page.dart';
 import 'package:whatsapp_clone/utils/routes.dart';
-
 void main() => runApp(MyApp());
 class MyApp extends StatelessWidget {
   MyApp({ Key? key }) : super(key: key);
@@ -19,8 +19,9 @@ class MyApp extends StatelessWidget {
       home: Material(
         child: HomePage(),
       ),
-      initialRoute: AppRoutes.homeRoute,
+      initialRoute: AppRoutes.loginRoute,
       routes: {
+        AppRoutes.loginRoute: (context) => LoginPage(),
         AppRoutes.homeRoute: (context) => HomePage(),
         AppRoutes.chatRoute: (context) => ChatScreen(),
       },
