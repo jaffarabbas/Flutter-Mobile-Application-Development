@@ -5,6 +5,7 @@ import 'package:widgits_practice/pages/home_page.dart';
 import 'package:widgits_practice/pages/login_page.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:widgits_practice/utils/routes.dart';
+import 'package:widgits_practice/widgits/themes.dart';
 
 void main(){
   runApp(MyApp());
@@ -18,20 +19,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       themeMode: ThemeMode.light,
-      theme: ThemeData(
-        primarySwatch: Colors.deepPurple,
-        fontFamily: GoogleFonts.roboto().fontFamily,
-        appBarTheme: AppBarTheme(
-          color: Colors.white,
-          elevation: 0.0,
-          iconTheme: IconThemeData(
-            color: Colors.black,
-          ), toolbarTextStyle: Theme.of(context).textTheme.bodyText2, titleTextStyle: Theme.of(context).textTheme.headline6,
-        ),
-      ),
-      darkTheme: ThemeData(
-        brightness: Brightness.dark,
-      ),
+      theme: AppTheme.lightTheme(context),
+      darkTheme : AppTheme.darkTheme(context),
       initialRoute: AppRoutes.homeRoute,
       routes: {
         AppRoutes.homeRoute: (context) => HomePage(),
