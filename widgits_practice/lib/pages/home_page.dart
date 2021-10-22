@@ -9,22 +9,25 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text('Home App'),
+      appBar: AppBar(
+        centerTitle: true,
+        title: Text(
+          'Catalog App',
         ),
-        body: Center(
-          // ignore: avoid_unnecessary_containers
-          child: Container(
-            child: Text("Hello world!",
-              style: TextStyle(
+      ),
+      body: Center(
+        // ignore: avoid_unnecessary_containers
+        child: Container(
+          child: Text(
+            "Hello world!",
+            style: TextStyle(
                 fontSize: 30,
                 fontWeight: FontWeight.bold,
-                color: Colors.deepPurple
-              ),
-            ),
+                color: Colors.deepPurple),
           ),
         ),
-        drawer: AppDrawer(),
-      );
+      ),
+      drawer: AppDrawer(),
+    );
   }
 }
