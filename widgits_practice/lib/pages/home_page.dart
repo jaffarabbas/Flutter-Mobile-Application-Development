@@ -3,6 +3,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:widgits_practice/models/catalog.dart';
 import 'package:widgits_practice/widgits/drawer.dart';
@@ -27,7 +28,7 @@ class _HomePageState extends State<HomePage> {
         await rootBundle.loadString("assets/files/catalog.json");
     final decodeData = jsonDecode(catalogJson);
     var productData = decodeData["products"];
-   // print(productData);
+    // print(productData);
     CatalogModels.items = List.from(productData)
         .map<ItemModel>((item) => ItemModel.fromMap(item))
         .toList();
@@ -43,21 +44,50 @@ class _HomePageState extends State<HomePage> {
           'Catalog App',
         ),
       ),
-      body: (CatalogModels.items != null && CatalogModels.items.isNotEmpty)
-          ? Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: ListView.builder(
-                itemCount: CatalogModels.items.length,
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: (CatalogModels.items != null && CatalogModels.items.isNotEmpty)
+            ? GridView.builder(
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  mainAxisSpacing: 16,
+                  crossAxisSpacing: 16,
+                ),
                 itemBuilder: (context, index) {
-                  return ItemWidgit(
-                    itemModel: CatalogModels.items[index],
+                  final item = CatalogModels.items[index];
+                  return Card(
+                    clipBehavior: Clip.antiAlias,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10)),
+                    child: GridTile(
+                      header: Container(
+                          padding: EdgeInsets.all(12),
+                          decoration: BoxDecoration(
+                            color: Colors.deepPurple,
+                          ),
+                          child: Text(
+                            item.name,
+                            style: TextStyle(color: Colors.white),
+                          ),),
+                      child: Image.network(item.imageUrl),
+                      footer: Container(
+                        padding: EdgeInsets.all(12),
+                        decoration: BoxDecoration(
+                          color: Colors.black,
+                        ),
+                        child: Text(
+                          item.price.toString(),
+                          style: TextStyle(color: Colors.white),
+                        ),),
+                    ),
                   );
                 },
+                itemCount: CatalogModels.items.length,
+              )
+            : Center(
+                child: CircularProgressIndicator(),
               ),
-            )
-          : Center(
-              child: CircularProgressIndicator(),
-            ),
+      ),
       drawer: AppDrawer(),
     );
   }
