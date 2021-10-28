@@ -1,13 +1,15 @@
-// ignore_for_file: prefer_const_constructors, unnecessary_null_comparison
+// ignore_for_file: prefer_const_constructors, unnecessary_null_comparison, avoid_unnecessary_containers, prefer_const_literals_to_create_immutables
 
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
+import 'package:velocity_x/velocity_x.dart';
 import 'package:widgits_practice/models/catalog.dart';
 import 'package:widgits_practice/widgits/drawer.dart';
 import 'package:widgits_practice/widgits/item_widgit.dart';
+import 'package:widgits_practice/widgits/themes.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -38,57 +40,33 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: Text(
-          'Catalog App',
+      body: SafeArea(
+        child: Container(
+          padding: Vx.m32,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              CatalogHeader(),
+            ],
+          ),
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: (CatalogModels.items != null && CatalogModels.items.isNotEmpty)
-            ? GridView.builder(
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  mainAxisSpacing: 16,
-                  crossAxisSpacing: 16,
-                ),
-                itemBuilder: (context, index) {
-                  final item = CatalogModels.items[index];
-                  return Card(
-                    clipBehavior: Clip.antiAlias,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10)),
-                    child: GridTile(
-                      header: Container(
-                          padding: EdgeInsets.all(12),
-                          decoration: BoxDecoration(
-                            color: Colors.deepPurple,
-                          ),
-                          child: Text(
-                            item.name,
-                            style: TextStyle(color: Colors.white),
-                          ),),
-                      child: Image.network(item.imageUrl),
-                      footer: Container(
-                        padding: EdgeInsets.all(12),
-                        decoration: BoxDecoration(
-                          color: Colors.black,
-                        ),
-                        child: Text(
-                          item.price.toString(),
-                          style: TextStyle(color: Colors.white),
-                        ),),
-                    ),
-                  );
-                },
-                itemCount: CatalogModels.items.length,
-              )
-            : Center(
-                child: CircularProgressIndicator(),
-              ),
-      ),
-      drawer: AppDrawer(),
     );
+  }
+}
+
+
+class CatalogHeader extends StatelessWidget {
+  const CatalogHeader({ Key? key }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              "Catalog App".text.xl5.bold.color(AppTheme.darkBluishColor).make(),
+              "Treanding Products".text.xl2.make(),
+            ],
+          );
   }
 }
