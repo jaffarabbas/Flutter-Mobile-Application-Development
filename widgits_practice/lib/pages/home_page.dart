@@ -47,6 +47,12 @@ class _HomePageState extends State<HomePage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               CatalogHeader(),
+              if(CatalogModels.items != null && CatalogModels.items.isNotEmpty)
+                 CatalogList()
+              else
+                 Center(
+                   child: CircularProgressIndicator(),
+                 )
             ],
           ),
         ),
@@ -55,18 +61,33 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
-
 class CatalogHeader extends StatelessWidget {
-  const CatalogHeader({ Key? key }) : super(key: key);
+  const CatalogHeader({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              "Catalog App".text.xl5.bold.color(AppTheme.darkBluishColor).make(),
-              "Treanding Products".text.xl2.make(),
-            ],
-          );
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        "Catalog App".text.xl5.bold.color(AppTheme.darkBluishColor).make(),
+        "Treanding Products".text.xl2.make(),
+      ],
+    );
+  }
+}
+
+
+class CatalogList extends StatelessWidget {
+  const CatalogList({ Key? key }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+      itemCount: CatalogModels.items.length,
+      itemBuilder: (context, index) {
+        final catalog = CatalogModels.items[index];
+        return Catalogitem(catalog);
+      },
+    );
   }
 }
