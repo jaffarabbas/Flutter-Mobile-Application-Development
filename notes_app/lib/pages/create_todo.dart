@@ -13,19 +13,21 @@ class CreateTodo extends StatefulWidget {
 
 class _CreateTodoState extends State<CreateTodo> {
   TextEditingController controller = new TextEditingController();
-  void insert(){
+  void insert() {
+    // print(controller.value.text);
+    print(Datamap.DataSource()["todo"].length);
     setState(() {
-      Datamap.DataSource()["todo"].add(
-        {
-          'heading': controller.value.text,
-          'description':
-              'How to make your oesonal brand stand out onlineHow to make your oesonal brand stand out onlineHow to make your oesonal brand stand out onlineHow to make your oesonal brand stand out onlineHow to make your oesonal brand stand out onlineHow to make your oesonal brand stand out online',
-          'timestamp': '1-jan-2021',
-          'isOne': true,
-        },
-      );
+      Datamap.DataSource()["todo"].add({
+        'heading': controller.value.text,
+        'description':
+            'How to make your oesonal brand stand out onlineHow to make your oesonal brand stand out onlineHow to make your oesonal brand stand out onlineHow to make your oesonal brand stand out onlineHow to make your oesonal brand stand out onlineHow to make your oesonal brand stand out online',
+        'timestamp': '1-jan-2021',
+        'isOne': true,
+      });
+      // print(Datamap.DataSource()["todo"]);
     });
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,14 +35,16 @@ class _CreateTodoState extends State<CreateTodo> {
       appBar: AppBar(
         leadingWidth: 80,
         leading: Container(
-          margin:EdgeInsets.only(left:30),
-          padding: const EdgeInsets.symmetric(vertical:8.0),
+          margin: EdgeInsets.only(left: 30),
+          padding: const EdgeInsets.symmetric(vertical: 8.0),
           child: Container(
             alignment: Alignment.center,
             height: 20,
             // width: 40,
             // margin:EdgeInsets.only(left:10),
-            padding: EdgeInsets.symmetric(horizontal: 10,),
+            padding: EdgeInsets.symmetric(
+              horizontal: 10,
+            ),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(12),
               color: AppTheme.iconbackground,
@@ -53,7 +57,7 @@ class _CreateTodoState extends State<CreateTodo> {
         ),
         actions: [
           InkWell(
-            onTap: (){
+            onTap: () {
               insert();
               Navigator.pop(context);
             },
