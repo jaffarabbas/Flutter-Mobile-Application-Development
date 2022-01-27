@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "243309330379",
+    "project_id": "darklordfluttercrudapp",
+    "storage_bucket": "darklordfluttercrudapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:243309330379:android:0522cd1ec520fd4298004e",
+        "android_client_info": {
+          "package_name": "com.example.flutter_app_10"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "243309330379-inc7h7djlom5563c73q1rg4jdh6qormi.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCvB-guoxCRLUzvT2WepEuEvJM3TMOfV68"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "243309330379-inc7h7djlom5563c73q1rg4jdh6qormi.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
