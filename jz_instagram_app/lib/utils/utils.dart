@@ -17,3 +17,19 @@ ShowSnakBar(String content, BuildContext context) {
     ),
   );
 }
+
+void NavigatorToScreen(BuildContext context, Widget widget, int methodNumber) {
+  if (methodNumber == 0) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => widget,
+      ),
+    );
+  } else if (methodNumber == 1) {
+    Navigator.of(context).pushReplacement(
+      MaterialPageRoute(
+        builder: (context) => widget,
+      ),
+    );
+  }
+}
