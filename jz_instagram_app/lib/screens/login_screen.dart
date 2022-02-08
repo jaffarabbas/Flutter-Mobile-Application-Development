@@ -7,6 +7,9 @@ import 'package:jz_instagram_app/screens/signup_screen.dart';
 import 'package:jz_instagram_app/utils/colors.dart';
 import 'package:jz_instagram_app/widgets/text_feild_input.dart';
 
+import '../responsive/mobile_screen_layout.dart';
+import '../responsive/responsive_layout_screen.dart';
+import '../responsive/web_screen_layout.dart';
 import '../utils/utils.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -47,20 +50,21 @@ class _LoginScreenState extends State<LoginScreen> {
       email: _emailController.text,
       password: _passwordController.text,
     );
+    print("login: ${response}");
     if (response != 'success') {
       ShowSnakBar(response, context);
       ClearTextFeilds();
+    } else {
+      NavigatorToScreen(
+        context,
+        const ResponsiveLayout(
+          WebScreenLayout: WebScreenLayout(),
+          MobileScreenLayout: MobileScreenLayout(),
+        ),
+        1,
+      );
     }
     SetLoading(false);
-  }
-
-  //navigate to SignUp
-  void NavigateToSignUp() {
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (context) => const SignUpScreen(),
-      ),
-    );
   }
 
   @override
@@ -144,7 +148,8 @@ class _LoginScreenState extends State<LoginScreen> {
                       padding: const EdgeInsets.symmetric(vertical: 8),
                     ),
                     GestureDetector(
-                      onTap: NavigateToSignUp,
+                      onTap: () =>
+                          NavigatorToScreen(context, const SignUpScreen(), 0),
                       child: Container(
                         child: const Text(
                           "Sign up.",
