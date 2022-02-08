@@ -3,12 +3,14 @@
 import 'package:flutter/material.dart';
 
 class MobileScreenLayout extends StatelessWidget {
-  const MobileScreenLayout({ Key? key }) : super(key: key);
+  const MobileScreenLayout({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Text('this is mobile screen'),
+      body: Center(
+        child: Text('this is mobile screen'),
+      ),
     );
   }
 }
