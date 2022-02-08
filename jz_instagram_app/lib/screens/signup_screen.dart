@@ -10,6 +10,10 @@ import 'package:jz_instagram_app/utils/colors.dart';
 import 'package:jz_instagram_app/utils/utils.dart';
 import 'package:jz_instagram_app/widgets/text_feild_input.dart';
 
+import '../responsive/mobile_screen_layout.dart';
+import '../responsive/responsive_layout_screen.dart';
+import '../responsive/web_screen_layout.dart';
+
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({Key? key}) : super(key: key);
 
@@ -72,16 +76,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
     if (response != 'success') {
       ShowSnakBar(response, context);
       ClearTextFeilds();
+    } else {
+      NavigatorToScreen(
+        context,
+        const ResponsiveLayout(
+          WebScreenLayout: WebScreenLayout(),
+          MobileScreenLayout: MobileScreenLayout(),
+        ),
+        1
+      );
     }
-  }
-
-  //navigate to Login
-  void NavigateToLogin() {
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (context) => const LoginScreen(),
-      ),
-    );
   }
 
   @override
@@ -176,7 +180,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               color: primaryColor,
                             ),
                           )
-                        : const Text('Login in'),
+                        : const Text('Sign Up'),
                     width: double.infinity,
                     alignment: Alignment.center,
                     padding: const EdgeInsets.symmetric(vertical: 12),
@@ -205,7 +209,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       padding: const EdgeInsets.symmetric(vertical: 8),
                     ),
                     GestureDetector(
-                      onTap: NavigateToLogin,
+                      onTap: () => NavigatorToScreen(
+                        context,
+                        const LoginScreen(),
+                        0
+                      ),
                       child: Container(
                         child: const Text(
                           "Login In.",
