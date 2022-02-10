@@ -2,9 +2,9 @@
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class Links{
-  static final url = dotenv.env['URL']!;
-  static final String get = url + "getstudent/";
-  static final String post = url + "poststudent/";
-  static final String update = url + "updatestudent/";
-  static final String delete = url + "deletestudent/";
+  static const url = "https://jzstudentinfo.herokuapp.com/";
+  static const String get = url + "getstudent/";
+  static const String post = url + "poststudent/";
+  static const String update = url + "updatestudent/";
+  static const String delete = url + "deletestudent/";
 }
