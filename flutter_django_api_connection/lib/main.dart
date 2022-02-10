@@ -7,7 +7,6 @@ import 'package:flutter_django_api_connection/pages/splash_screen.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 void main() {
-  // await dotenv.load();
   runApp(MyApp());
 }
 
