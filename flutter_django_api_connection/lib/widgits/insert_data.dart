@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_django_api_connection/models/Students.dart';
+import 'package:flutter_django_api_connection/pages/home_page.dart';
 import 'package:flutter_django_api_connection/services/fetchApi.dart';
+import 'package:flutter_django_api_connection/widgits/userList.dart';
 
 class InsertData extends StatefulWidget {
-  const InsertData({ Key? key }) : super(key: key);
+  const InsertData({Key? key}) : super(key: key);
 
   @override
   _InsertDataState createState() => _InsertDataState();
@@ -13,52 +16,53 @@ class _InsertDataState extends State<InsertData> {
   TextEditingController rollcontroller = TextEditingController();
   TextEditingController citycontroller = TextEditingController();
 
-  Future<void> PostData() async {
-  ApiService _apiServices = ApiService();
-  Future<bool> flag = _apiServices.postStudent(namecontroller.text,int.parse(rollcontroller.text),citycontroller.text);
-  if(await flag){
-    print("doneeeeeeeeeee");
+  void InputClear() {
     namecontroller.clear();
     rollcontroller.clear();
     citycontroller.clear();
-  }else{
-    print("not done");
   }
-}
+
+  void PostData() async {
+    ApiService _apiServices = ApiService();
+    await _apiServices.postStudent(namecontroller.text,
+        int.parse(rollcontroller.text), citycontroller.text);
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => HomePage(),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(vertical:2),
+      padding: EdgeInsets.symmetric(vertical: 2),
       width: double.infinity,
       // height: 50,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Container(
-            // width: 300,
+            width: 300,
             child: TextField(
               controller: namecontroller,
-              decoration: InputDecoration(
-                hintText:  "Ener Student Name"
-              ),
+              decoration: InputDecoration(hintText: "Ener Student Name",),
             ),
           ),
           Container(
-            // width: 300,
+            width: 300,
             child: TextField(
               controller: rollcontroller,
-              decoration: InputDecoration(
-                hintText:  "Ener Student roll"
-              ),
+              decoration: InputDecoration(hintText: "Ener Student roll"),
             ),
           ),
           Container(
-            // width: 300,
+            width: 300,
+            margin: EdgeInsets.only(bottom:10),
             child: TextField(
               controller: citycontroller,
-              decoration: InputDecoration(
-                hintText:  "Ener Student city"
-              ),
+              decoration: InputDecoration(hintText: "Ener Student city"),
             ),
           ),
           InkWell(
@@ -69,7 +73,7 @@ class _InsertDataState extends State<InsertData> {
               color: Colors.blueAccent,
               child: const Text(
                 'Insert',
-                style: TextStyle(fontSize: 15,color: Colors.white),
+                style: TextStyle(fontSize: 15, color: Colors.white),
               ),
             ),
           )
