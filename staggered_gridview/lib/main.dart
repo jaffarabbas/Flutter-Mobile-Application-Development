@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
         body: Padding(
           padding: EdgeInsets.all(8.0),
           child: SingleChildScrollView(
-            child: QuiledGridView(),
+            child: StaggeredGridView(),
           ),
         ),
       ),
