@@ -36,6 +36,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   git: ^2.0.0
   process_run: ^0.12.3+2
+  intl: ^0.17.0
 
 dev_dependencies:
   flutter_test:
