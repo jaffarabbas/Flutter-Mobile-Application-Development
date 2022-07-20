@@ -3,14 +3,21 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:git_test_application/pages/commit_page.dart';
 import 'package:path/path.dart' as p;
-
-class HomePage extends StatelessWidget {
+import 'package:process_run/shell.dart';
+import 'dart:io' as io;
+class HomePage extends StatefulWidget {
 
   const HomePage({Key? key}) : super(key: key);
 
   @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  @override
   Widget build(BuildContext context) {
     var myDir = Directory('J:\\Github\\');
+
     return Scaffold(
       body: Container(
         child: Center(
