@@ -5,7 +5,9 @@ import 'dart:io' as io;
 
 class CommitPage extends StatefulWidget {
   String path;
-  CommitPage({Key? key, required this.path}) : super(key: key);
+  List<String> data;
+  CommitPage({Key? key, required this.path, required this.data})
+      : super(key: key);
 
   @override
   State<CommitPage> createState() => _CommitPageState();
@@ -34,6 +36,7 @@ class _CommitPageState extends State<CommitPage> {
     }
 
     Future<List<String>> CommitDataList(List data) async {
+      // GetCommitDetails();
       for (var element in data) {
         fileForCommit.add(element.toString().split(" ").last);
       }
@@ -73,6 +76,7 @@ class _CommitPageState extends State<CommitPage> {
       git push
       ''');
     }
+
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -99,34 +103,31 @@ class _CommitPageState extends State<CommitPage> {
                   icon: const Icon(Icons.done),
                   color: Colors.white,
                   onPressed: () {
-                    GetCommitDetails();
+                    setState(() {});
+                    print(widget.data);
+                    // GetCommitDetails();
                   },
                 ),
               ),
               Container(
                 height: 300,
-                child: FutureBuilder<List<String>>(
-                  future: CommitDataList(controller.text.split("\n")),
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData) {
-                      return ListView.builder(
-                        itemCount: snapshot.data!.length,
-                        itemBuilder: (context, index) {
-                          return ListTile(
-                            title: Text(snapshot.data![index]),
-                          );
-                        },
-                      );
-                    } else if (snapshot.hasError) {
-                      return Text('${snapshot.error}');
-                    }
-                    return CircularProgressIndicator();
+                child: ListView.builder(
+                  itemCount: widget.data.length,
+                  itemBuilder: (context, index) {
+                    return ListTile(
+                        title: InkWell(
+                      onTap: () {
+                        CommitFiles(widget.data[index]);
+                      },
+                      child: Text("$index ${widget.data[index]}"),
+                    ));
                   },
                 ),
               ),
               InkWell(
                 onTap: () {
-                  Committer(fileForCommit).whenComplete(() => PushCommitedFile());
+                  // Committer(fileForCommit)
+                  //     .whenComplete(() => PushCommitedFile());
                 },
                 child: Container(
                   color: Colors.blueAccent,
