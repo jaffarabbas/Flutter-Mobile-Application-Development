@@ -15,6 +15,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   Completer<GoogleMapController> _controller = Completer();
+  MapType _currentMapType = MapType.normal;
 
   static final CameraPosition _kGooglePlex = const CameraPosition(
     target: LatLng(24.860966, 66.990501),
@@ -58,21 +59,35 @@ class _HomePageState extends State<HomePage> {
         Marker(
           markerId: MarkerId("2"),
           position: LatLng(value.latitude, value.longitude),
-          infoWindow: InfoWindow(title: 'My location',snippet: "Lat: ${value.latitude} Long: ${value.longitude}"),
+          infoWindow: InfoWindow(
+              title: 'My location',
+              snippet: "Lat: ${value.latitude} Long: ${value.longitude}"),
         ),
       );
 
       CameraPosition cameraPosition = CameraPosition(
         target: LatLng(value.latitude, value.longitude),
-        zoom: 20,
+        zoom: 14,
       );
 
       final GoogleMapController controller = await _controller.future;
       controller.animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
 
-      setState(() {
-        
-      });
+      setState(() {});
+    });
+  }
+
+  void mapType(String type) async {
+    setState(() {
+      if (type == "normal") {
+        _currentMapType = MapType.normal;
+      } else if (type == "satellite") {
+        _currentMapType = MapType.satellite;
+      } else if (type == "hybrid") {
+        _currentMapType = MapType.hybrid;
+      } else if (type == "terrain") {
+        _currentMapType = MapType.terrain;
+      }
     });
   }
 
@@ -89,11 +104,44 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Map Integration'),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 14.0),
+            child: DropdownButtonHideUnderline(
+              child: DropdownButton(
+                icon: Icon(Icons.map, color: Colors.white),
+                items: const [
+                  DropdownMenuItem(
+                    value: 'normal',
+                    child: Text('normal'),
+                  ),
+                  DropdownMenuItem(
+                    value: 'satellite',
+                    child: Text('Satellite'),
+                  ),
+                  DropdownMenuItem(
+                    value: 'hybrid',
+                    child: Text('Hybrid'),
+                  ),
+                  DropdownMenuItem(
+                    value: 'terrain',
+                    child: Text('Terrain'),
+                  ),
+                ],
+                onChanged: (value) {
+                  setState(() {
+                    mapType(value.toString());
+                  });
+                },
+              ),
+            ),
+          ),
+        ],
       ),
       body: SafeArea(
         child: GoogleMap(
           initialCameraPosition: _kGooglePlex,
-          mapType: MapType.satellite,
+          mapType: _currentMapType,
           markers: Set<Marker>.of(_markers),
           // myLocationButtonEnabled: true,
           // myLocationEnabled: true,
@@ -110,6 +158,7 @@ class _HomePageState extends State<HomePage> {
         },
         child: const Icon(Icons.location_on),
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
     );
   }
 }
