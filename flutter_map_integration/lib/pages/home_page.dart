@@ -1,6 +1,8 @@
 import 'dart:async';
-
+import 'dart:typed_data';
+import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:geolocator/geolocator.dart';
@@ -17,12 +19,11 @@ class _HomePageState extends State<HomePage> {
   Completer<GoogleMapController> _controller = Completer();
   MapType _currentMapType = MapType.normal;
 
-  static final CameraPosition _kGooglePlex = const CameraPosition(
-    target: LatLng(24.860966, 66.990501),
+  static const CameraPosition _kGooglePlex = CameraPosition(
+    target: LatLng(24.8959986,67.0300502),
     zoom: 14.4746,
   );
 
-  List<Marker> _markers = [];
   List<Marker> list = [
     // Marker(
     //     markerId: MarkerId('marker1'),
@@ -32,6 +33,14 @@ class _HomePageState extends State<HomePage> {
     //     position: LatLng(24.871940, 66.988060),
     //     infoWindow: InfoWindow(title: 'Marker 2')
     // ),
+  ];
+  List<Marker> _markers = [];
+  List<String> images = ["assets/images/car.png", "assets/images/food-delivery.png", "assets/images/walk.png"];
+
+  List<LatLng> _latLng = [
+    LatLng(24.860966, 66.990501),
+    LatLng(24.871940, 66.988060),
+    LatLng(24.8959986,67.0300502),
   ];
 
   void goToHardCodedLocation() async {
@@ -54,10 +63,12 @@ class _HomePageState extends State<HomePage> {
   }
 
   void navigateToCurrentLocation() async {
+    final Uint8List markerIcon = await getBytesFromAssets(images[2], 100);
     getCurrentLocation().then((value) async {
       _markers.add(
         Marker(
-          markerId: MarkerId("2"),
+          icon: BitmapDescriptor.fromBytes(markerIcon),
+          markerId: MarkerId("69"),
           position: LatLng(value.latitude, value.longitude),
           infoWindow: InfoWindow(
               title: 'My location',
@@ -91,12 +102,38 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
+  Future<Uint8List> getBytesFromAssets(String path,int width) async {
+    ByteData data = await rootBundle.load(path);
+    ui.Codec codec = await ui.instantiateImageCodec(data.buffer.asUint8List(), targetWidth: width);
+    ui.FrameInfo frameInfo = await codec.getNextFrame();
+    return (await frameInfo.image.toByteData(format: ui.ImageByteFormat.png))!.buffer.asUint8List(); 
+  }
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    _markers.addAll(list);
+    // _markers.addAll(list);
+    loadData();
     navigateToCurrentLocation();
+  }
+
+  void loadData() async{
+    for(int i = 0; i < images.length; i++){
+      print(images[i]);
+       final Uint8List markerIcon = await getBytesFromAssets(images[i], 100);
+      _markers.add(
+        Marker(
+          markerId: MarkerId(i.toString()),
+          position: _latLng[i],
+          infoWindow: InfoWindow(title: "Marker $i"),
+          icon: BitmapDescriptor.fromBytes(markerIcon),
+        ),
+      );
+      setState(() {
+        
+      });
+    }
   }
 
   @override
@@ -143,8 +180,8 @@ class _HomePageState extends State<HomePage> {
           initialCameraPosition: _kGooglePlex,
           mapType: _currentMapType,
           markers: Set<Marker>.of(_markers),
-          // myLocationButtonEnabled: true,
-          // myLocationEnabled: true,
+          myLocationButtonEnabled: true,
+          myLocationEnabled: true,
           // mapToolbarEnabled: true,
           // compassEnabled: true,
           onMapCreated: (GoogleMapController controller) {
