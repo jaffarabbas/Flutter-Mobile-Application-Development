@@ -1,6 +1,8 @@
+import 'package:custom_info_window/custom_info_window.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map_integration/components/convertLatLangToAddress.dart';
 import 'package:flutter_map_integration/components/custom_marker.dart';
+import 'package:flutter_map_integration/components/custome_Info_window.dart';
 import 'package:flutter_map_integration/components/google_places_api.dart';
 import 'package:flutter_map_integration/pages/home_page.dart';
 
