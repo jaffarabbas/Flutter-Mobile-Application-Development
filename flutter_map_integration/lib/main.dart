@@ -4,6 +4,7 @@ import 'package:flutter_map_integration/components/convertLatLangToAddress.dart'
 import 'package:flutter_map_integration/components/custom_marker.dart';
 import 'package:flutter_map_integration/components/custome_Info_window.dart';
 import 'package:flutter_map_integration/components/google_places_api.dart';
+import 'package:flutter_map_integration/components/polygone_screen.dart';
 import 'package:flutter_map_integration/pages/home_page.dart';
 
 void main() {
@@ -22,7 +23,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: HomePage(),
+      home: PolyGoneIntegration(),
     );
   }
 }
