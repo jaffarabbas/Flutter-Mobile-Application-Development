@@ -70,7 +70,6 @@ class _HomePageState extends State<HomePage> {
   }
 
   void navigateToCurrentLocation() async {
-    print("NNNNNNNNNNNNNNNNNNNNNNNNNNN");
     getCurrentLocation().then((value) async {
       // _markers.add(
       //   Marker(
@@ -295,3 +294,4 @@ class _HomePageState extends State<HomePage> {
     );
   }
 }
+
