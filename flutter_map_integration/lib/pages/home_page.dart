@@ -50,6 +50,8 @@ class _HomePageState extends State<HomePage> {
     LatLng(24.8959986, 67.0300502),
   ];
 
+  Set<Polyline> _polylines = {};
+
   void goToHardCodedLocation() async {
     GoogleMapController controller = await _controller.future;
     controller.animateCamera(
@@ -118,6 +120,17 @@ class _HomePageState extends State<HomePage> {
         .asUint8List();
   }
 
+  void setPoliLines(int i){
+    _polylines.add(
+        Polyline(
+          polylineId: PolylineId(i.toString()),
+          points: _latLng,
+          color: Colors.blue,
+          width: 10,
+        ),
+      );
+  }
+ 
   @override
   void initState() {
     // TODO: implement initState
@@ -211,6 +224,7 @@ class _HomePageState extends State<HomePage> {
         ),
       );
       setState(() {});
+      setPoliLines(i);
     }
   }
 
@@ -268,6 +282,7 @@ class _HomePageState extends State<HomePage> {
               },
               myLocationButtonEnabled: true,
               myLocationEnabled: true,
+              polylines: _polylines,
               // mapToolbarEnabled: true,
               // compassEnabled: true,
               onMapCreated: (GoogleMapController controller) {
