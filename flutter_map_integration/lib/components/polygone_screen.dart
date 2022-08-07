@@ -43,7 +43,8 @@ class _PolyGoneIntegrationState extends State<PolyGoneIntegration> {
       Polygon(
         polygonId: PolygonId('polygon'),
         points: _latLng,
-        fillColor: Colors.blue,
+        fillColor: Colors.blue.withOpacity(0.2),
+        geodesic: true,
         strokeColor: Colors.blue,
         strokeWidth: 1,
       ),
