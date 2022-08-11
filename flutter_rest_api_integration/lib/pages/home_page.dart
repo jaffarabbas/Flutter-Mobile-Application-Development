@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_rest_api_integration/Models/PostModel.dart';
+import 'package:flutter_rest_api_integration/Services/Api/apiHandler.dart';
 import 'package:http/http.dart' as http;
 
 class HomePage extends StatefulWidget {
@@ -15,16 +16,12 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   List<PostModel> _posts = [];
-  Future<List<PostModel>> getPostApi() async {
-    final response =
-        await http.get(Uri.parse('https://jsonplaceholder.typicode.com/posts'));
-    var data = jsonDecode(response.body.toString());
-    if (response.statusCode == 200) {
-      for (Map i in data) {
-        _posts.add(PostModel.fromJson(i));
+  Future<List<PostModel>> getPost() async {
+    var data = await ApiHandler.fetchApi('https://jsonplaceholder.typicode.com/posts').then((value) => {
+      for (var i in value) {
+        _posts.add(PostModel.fromJson(i))
       }
-      return _posts;
-    }
+    });
     return _posts;
   }
 
@@ -43,9 +40,28 @@ class _HomePageState extends State<HomePage> {
                   return ListView.builder(
                     itemCount: _posts.length,
                     itemBuilder: (context, index) {
-                      return ListTile(
-                        title: Text(_posts[index].title.toString()),
-                        subtitle: Text(_posts[index].body.toString()),
+                      print(_posts[index].title);
+                      return Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Container(
+                          padding: const EdgeInsets.all(8.0),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            boxShadow: const [
+                              BoxShadow(
+                                color: Color(0xFF626365),
+                                offset: Offset(0.0, 0.0), //(x,y)
+                                blurRadius: 3.0,
+                                spreadRadius: 2.0,
+                              ),
+                            ],
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          child: ListTile(
+                            title: Text(_posts[index].title.toString()),
+                            subtitle: Text(_posts[index].body.toString()),
+                          ),
+                        ),
                       );
                     },
                   );
@@ -54,7 +70,7 @@ class _HomePageState extends State<HomePage> {
                   child: CircularProgressIndicator(),
                 );
               },
-              future: getPostApi(),
+              future: getPost(),
             ),
           ),
         ],
