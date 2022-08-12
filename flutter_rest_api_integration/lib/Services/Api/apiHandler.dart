@@ -14,4 +14,17 @@ class ApiHandler{
     return data;
   }
 
+  static Future<Map> fetchRegister(String url, String email, String password) async {
+    final response =
+        await http.post(Uri.parse(url), body: {
+      'email': email,
+      'password': password,
+    });
+    var data = jsonDecode(response.body.toString());
+    if (response.statusCode == 200) {
+      return data;
+    }
+    return data;
+  }
+
 }
