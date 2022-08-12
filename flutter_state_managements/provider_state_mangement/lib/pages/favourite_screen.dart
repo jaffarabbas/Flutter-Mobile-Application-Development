@@ -19,7 +19,7 @@ class _FavouritepageState extends State<Favouritepage> {
         title: const Text('Favourite Page'),
         actions: [
           IconButton(
-            icon: Icon(Icons.favorite),
+            icon: Icon(Icons.favorite,color: Colors.white,),
             onPressed: () {
               Navigator.push(context, MaterialPageRoute(builder: ((context) => FavListScreen())));
             },
