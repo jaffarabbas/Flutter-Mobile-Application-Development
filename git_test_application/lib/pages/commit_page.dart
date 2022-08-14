@@ -105,7 +105,7 @@ class _CommitPageState extends State<CommitPage> {
                   onPressed: () {
                     setState(() {});
                     print(widget.data);
-                    // GetCommitDetails();
+                    GetCommitDetails();
                   },
                 ),
               ),
