@@ -59,11 +59,15 @@ class _HomePageState extends State<HomePage> {
                     return ListTile(
                         title: InkWell(
                       onTap: () async {
-                        GetCommitDetails(snapshot.data![index].path).then(
-                            (value) =>
-                                {CommitDataList(controller.text.split("\n"))});
+                        await GetCommitDetails(snapshot.data![index].path).then(
+                          (value) => {
+                            CommitDataList(
+                              controller.text.split("\n"),
+                            ),
+                          },
+                        );
                         // print(fileForCommit);
-                       Navigator.push(
+                        Navigator.push(
                           context,
                           MaterialPageRoute(
                             builder: (context) => CommitPage(
