@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter_mvvm_architecture/res/components/defaultButton.dart';
 import 'package:flutter_mvvm_architecture/utils/routes/routes_names.dart';
 import 'package:flutter_mvvm_architecture/utils/utils.dart';
+import 'package:provider/provider.dart';
+import '../view model/auth_view_model.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({Key? key}) : super(key: key);
@@ -18,8 +21,21 @@ class _LoginScreenState extends State<LoginView> {
   FocusNode emailFocusNode = FocusNode();
   FocusNode passwordFocusNode = FocusNode();
 
+  ValueNotifier<bool> _obscureText = ValueNotifier<bool>(false);
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    emailController.dispose();
+    passwordController.dispose();
+    emailFocusNode.dispose();
+    passwordFocusNode.dispose();
+    _obscureText.dispose();
+  }
   @override
   Widget build(BuildContext context) {
+    final authViewModel = Provider.of<AuthViewModel>(context);
     return Scaffold(
       appBar: AppBar(
         title: const Text("Login"),
@@ -38,46 +54,52 @@ class _LoginScreenState extends State<LoginView> {
                 prefixIcon: Icon(Icons.email),
                 labelText: 'Email',
               ),
-              onFieldSubmitted: (feild){
-                Utils.feildFocusChange(context, emailFocusNode, passwordFocusNode);
+              onFieldSubmitted: (feild) {
+                Utils.feildFocusChange(
+                    context, emailFocusNode, passwordFocusNode);
               },
             ),
             const SizedBox(
               height: 20,
             ),
-            TextFormField(
-              controller: passwordController,
-              obscureText: true,  
-              focusNode: passwordFocusNode,
-              decoration: const InputDecoration(
-                prefixIcon: Icon(Icons.lock),
-                labelText: 'Password',
-                suffixIcon: Icon(Icons.remove_red_eye),
-              ),
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            GestureDetector(
-              onTap: () {
-                
-              },
-              child: Container(
-                width: 200,
-                height: 50,
-                alignment: Alignment.center,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  color: Colors.redAccent,
-                ),
-                child: const Text(
-                  'Sign Up',
-                  style: TextStyle(
-                    color: Colors.white,
+            ValueListenableBuilder(
+              valueListenable: _obscureText,
+              builder: (context, falg, child) {
+                return TextFormField(
+                  controller: passwordController,
+                  obscureText: _obscureText.value,
+                  focusNode: passwordFocusNode,
+                  decoration: InputDecoration(
+                    prefixIcon: Icon(Icons.lock),
+                    labelText: 'Password',
+                    suffixIcon: InkWell(
+                      child: Icon(_obscureText.value
+                          ? Icons.visibility_off_outlined
+                          : Icons.visibility),
+                      onTap: () {
+                        _obscureText.value = !_obscureText.value;
+                      },
+                    ),
                   ),
-                ),
-              ),
+                );
+              },
             ),
+            const SizedBox(
+              height: 20,
+            ),
+            DefaultButton(title: 'Login', loading: false, onPressed: (){
+              if(emailController.text.isEmpty && passwordController.text.isEmpty){
+                Utils.flushBarErrorMessage('Please Fill All Feilds', context);
+              }else if(passwordController.text.length < 6){
+                Utils.flushBarErrorMessage('Password Must Be 6 Characters', context);
+              }else{  
+                Map data = {
+                  'email': emailController.text,
+                  'password': passwordController.text
+                };
+                authViewModel.loginApi(data, context);
+              }
+            })
           ],
         ),
       ),
