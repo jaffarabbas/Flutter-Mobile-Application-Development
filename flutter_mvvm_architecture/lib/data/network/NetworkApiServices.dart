@@ -5,7 +5,7 @@ import 'package:flutter_mvvm_architecture/data/network/BaseApiServices.dart';
 import '../app_exceptions.dart';
 import 'package:http/http.dart' as http;
 
-class NetworkApiResponce extends BaseApiServices {
+class NetworkApiService extends BaseApiServices {
   @override
   Future getGetApiResponce(String url) async {
     dynamic responseJson;
