@@ -87,15 +87,17 @@ class _LoginScreenState extends State<LoginView> {
             const SizedBox(
               height: 20,
             ),
-            DefaultButton(title: 'Login', loading: false, onPressed: (){
+            DefaultButton(title: 'Login', loading: authViewModel.authLoading, onPressed: (){
               if(emailController.text.isEmpty && passwordController.text.isEmpty){
                 Utils.flushBarErrorMessage('Please Fill All Feilds', context);
               }else if(passwordController.text.length < 6){
                 Utils.flushBarErrorMessage('Password Must Be 6 Characters', context);
               }else{  
                 Map data = {
-                  'email': emailController.text,
-                  'password': passwordController.text
+                  // 'email': emailController.text,
+                  'email': 'eve.holt@reqres.in',
+                  // 'password': passwordController.text
+                  'password': 'cityslicka'
                 };
                 authViewModel.loginApi(data, context);
               }
