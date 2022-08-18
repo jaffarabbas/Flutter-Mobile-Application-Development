@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter_mvvm_architecture/res/colors.dart';
-import 'package:flutter_mvvm_architecture/view/services/splash_services.dart';
+import 'package:flutter_dotnet_web_api_integration/res/colors.dart';
+import 'package:flutter_dotnet_web_api_integration/view/services/splash_services.dart';
 
 class SplashView extends StatefulWidget {
   const SplashView({Key? key}) : super(key: key);
@@ -17,7 +17,6 @@ class _SplashViewState extends State<SplashView> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    print("asd");
     _splashServices.checkAuthentication(context);
   }
 
@@ -35,7 +34,7 @@ class _SplashViewState extends State<SplashView> {
               size: 100,
               color: Colors.white,
             ),
-            Text('MVVM', style: TextStyle(color: Colors.white, fontSize: 30,fontWeight: FontWeight.bold)),
+            Text('MVVM REST API', style: TextStyle(color: Colors.white, fontSize: 30,fontWeight: FontWeight.bold)),
           ],
         ),
       ),
