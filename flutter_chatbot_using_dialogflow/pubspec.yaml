@@ -28,11 +28,9 @@ environment:
 # versions available, run `flutter pub outdated`.
 dependencies:
   cupertino_icons: ^1.0.2
-  dialogflow_grpc: ^0.2.9
+  dialog_flowtter: ^0.3.3
   flutter:
     sdk: flutter
-  rxdart: ^0.27.5
-  sound_stream: ^0.3.0
 
 dev_dependencies:
   flutter_lints: ^2.0.0
