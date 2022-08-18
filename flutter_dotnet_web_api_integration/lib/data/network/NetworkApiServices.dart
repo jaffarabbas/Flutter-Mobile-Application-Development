@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:flutter_mvvm_architecture/data/network/BaseApiServices.dart';
+import 'package:flutter_dotnet_web_api_integration/data/network/BaseApiServices.dart';
 
 import '../app_exceptions.dart';
 import 'package:http/http.dart' as http;
