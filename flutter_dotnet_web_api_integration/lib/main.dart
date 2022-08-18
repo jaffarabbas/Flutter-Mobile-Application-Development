@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotnet_web_api_integration/utils/routes/routes.dart';
 import 'package:flutter_dotnet_web_api_integration/utils/routes/routes_names.dart';
 import 'package:provider/provider.dart';
+
+import 'view model/auth_view_model.dart';
+import 'view model/user_view_model.dart';
 void main() {
   runApp(const MyApp());
 }
