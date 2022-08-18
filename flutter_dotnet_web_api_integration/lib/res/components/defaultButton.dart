@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter_mvvm_architecture/res/colors.dart';
+import 'package:flutter_dotnet_web_api_integration/res/colors.dart';
 
 class DefaultButton extends StatelessWidget {
   final String title;
