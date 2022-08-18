@@ -1,4 +1,4 @@
-import 'package:flutter_mvvm_architecture/data/response/status.dart';
+import 'package:flutter_dotnet_web_api_integration/data/response/status.dart';
 
 class ApiResponce<T>{
   Status? status;
