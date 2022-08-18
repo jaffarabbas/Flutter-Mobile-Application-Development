@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter_mvvm_architecture/res/components/defaultButton.dart';
-import 'package:flutter_mvvm_architecture/utils/routes/routes_names.dart';
-import 'package:flutter_mvvm_architecture/utils/utils.dart';
+import 'package:flutter_dotnet_web_api_integration/res/components/defaultButton.dart';
+import 'package:flutter_dotnet_web_api_integration/utils/routes/routes_names.dart';
+import 'package:flutter_dotnet_web_api_integration/utils/utils.dart';
 import 'package:provider/provider.dart';
 import '../view model/auth_view_model.dart';
 
@@ -101,7 +101,20 @@ class _LoginScreenState extends State<LoginView> {
                 };
                 authViewModel.loginApi(data, context);
               }
-            })
+            }),
+            const SizedBox(
+              height: 20,
+            ),
+            Row(
+              children: [
+                Text('Don\'t Have An Account?'),
+                TextButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, RoutesName.signup);
+                    },
+                    child: Text('Sign Up'))
+              ],
+            ),
           ],
         ),
       ),
