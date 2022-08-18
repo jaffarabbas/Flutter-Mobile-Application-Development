@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_mvvm_architecture/utils/routes/routes_names.dart';
-import 'package:flutter_mvvm_architecture/view/login_view.dart';
-import 'package:flutter_mvvm_architecture/view/splash_view.dart';
+import 'package:flutter_dotnet_web_api_integration/utils/routes/routes_names.dart';
+import 'package:flutter_dotnet_web_api_integration/view/login_view.dart';
+import 'package:flutter_dotnet_web_api_integration/view/splash_view.dart';
 
 import '../../view/home_screen.dart';
 
