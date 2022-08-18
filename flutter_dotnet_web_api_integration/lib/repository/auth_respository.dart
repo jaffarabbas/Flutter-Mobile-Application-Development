@@ -1,6 +1,6 @@
-import 'package:flutter_mvvm_architecture/data/network/BaseApiServices.dart';
-import 'package:flutter_mvvm_architecture/data/network/NetworkApiServices.dart';
-import 'package:flutter_mvvm_architecture/res/appUrls.dart';
+import 'package:flutter_dotnet_web_api_integration/data/network/BaseApiServices.dart';
+import 'package:flutter_dotnet_web_api_integration/data/network/NetworkApiServices.dart';
+import 'package:flutter_dotnet_web_api_integration/res/appUrls.dart';
 
 class AuthRepository{
   BaseApiServices _apiServices = NetworkApiService();
