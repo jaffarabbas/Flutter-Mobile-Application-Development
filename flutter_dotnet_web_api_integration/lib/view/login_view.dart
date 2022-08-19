@@ -106,6 +106,8 @@ class _LoginScreenState extends State<LoginView> {
               height: 20,
             ),
             Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Text('Don\'t Have An Account?'),
                 TextButton(
