@@ -28,6 +28,7 @@ class _LoginScreenState extends State<SignUpView> {
   FocusNode confirmPasswordFocusNode = FocusNode();
 
   ValueNotifier<bool> _obscureText = ValueNotifier<bool>(true);
+  ValueNotifier<bool> _obscureTextConfirmPassoword = ValueNotifier<bool>(true);
 
   @override
   void dispose() {
@@ -45,6 +46,7 @@ class _LoginScreenState extends State<SignUpView> {
     passwordFocusNode.dispose();
     confirmPasswordFocusNode.dispose();
     _obscureText.dispose();
+    _obscureTextConfirmPassoword.dispose();
   }
   @override
   Widget build(BuildContext context) {
@@ -71,6 +73,22 @@ class _LoginScreenState extends State<SignUpView> {
               onFieldSubmitted: (feild) {
                 Utils.feildFocusChange(
                     context, firstNameFocusNode, lastNameFocusNode);
+              },
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            TextFormField(
+              controller: lastNameController,
+              keyboardType: TextInputType.name,
+              focusNode: lastNameFocusNode,
+              decoration: const InputDecoration(
+                prefixIcon: Icon(Icons.person),
+                labelText: 'Last Name',
+              ),
+              onFieldSubmitted: (feild) {
+                Utils.feildFocusChange(
+                    context, lastNameFocusNode, emailFocusNode);
               },
             ),
             const SizedBox(
@@ -118,7 +136,7 @@ class _LoginScreenState extends State<SignUpView> {
               height: 20,
             ),
             ValueListenableBuilder(
-              valueListenable: _obscureText,
+              valueListenable: _obscureTextConfirmPassoword,
               builder: (context, falg, child) {
                 return TextFormField(
                   controller: confirmPasswordController,
@@ -128,11 +146,11 @@ class _LoginScreenState extends State<SignUpView> {
                     prefixIcon: Icon(Icons.lock),
                     labelText: 'Confirm Password',
                     suffixIcon: InkWell(
-                      child: Icon(_obscureText.value
+                      child: Icon(_obscureTextConfirmPassoword.value
                           ? Icons.visibility_off_outlined
                           : Icons.visibility),
                       onTap: () {
-                        _obscureText.value = !_obscureText.value;
+                        _obscureTextConfirmPassoword.value = !_obscureTextConfirmPassoword.value;
                       },
                     ),
                   ),
@@ -142,19 +160,20 @@ class _LoginScreenState extends State<SignUpView> {
             const SizedBox(
               height: 20,
             ),
-            DefaultButton(title: 'Login', loading: authViewModel.authLoading, onPressed: (){
-              if(emailController.text.isEmpty && passwordController.text.isEmpty){
+            DefaultButton(title: 'SignUP', loading: authViewModel.authLoading, onPressed: (){
+              if(firstNameController.text.isEmpty && lastNameController.text.isEmpty && emailController.text.isEmpty && passwordController.text.isEmpty && confirmPasswordController.text.isEmpty){
                 Utils.flushBarErrorMessage('Please Fill All Feilds', context);
               }else if(passwordController.text.length < 6){
                 Utils.flushBarErrorMessage('Password Must Be 6 Characters', context);
               }else{  
                 Map data = {
-                  // 'email': emailController.text,
-                  'email': 'eve.holt@reqres.in',
-                  // 'password': passwordController.text
-                  'password': 'cityslicka'
+                  'firstName': firstNameController.text,
+                  'lastName': lastNameController.text,
+                  'email': emailController.text,
+                  'password': passwordController.text,
+                  'confirmPassword': confirmPasswordController.text,
                 };
-                authViewModel.loginApi(data, context);
+                authViewModel.signUpApi(data, context);
               }
             }),
             const SizedBox(
