@@ -33,6 +33,7 @@ class _LoginScreenState extends State<LoginView> {
     passwordFocusNode.dispose();
     _obscureText.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
     final authViewModel = Provider.of<AuthViewModel>(context);
@@ -87,21 +88,25 @@ class _LoginScreenState extends State<LoginView> {
             const SizedBox(
               height: 20,
             ),
-            DefaultButton(title: 'Login', loading: authViewModel.authLoading, onPressed: (){
-              if(emailController.text.isEmpty && passwordController.text.isEmpty){
-                Utils.flushBarErrorMessage('Please Fill All Feilds', context);
-              }else if(passwordController.text.length < 6){
-                Utils.flushBarErrorMessage('Password Must Be 6 Characters', context);
-              }else{  
-                Map data = {
-                  // 'email': emailController.text,
-                  'email': 'eve.holt@reqres.in',
-                  // 'password': passwordController.text
-                  'password': 'cityslicka'
-                };
-                authViewModel.loginApi(data, context);
-              }
-            }),
+            DefaultButton(
+                title: 'Login',
+                loading: authViewModel.authLoading,
+                onPressed: () {
+                  if (emailController.text.isEmpty &&
+                      passwordController.text.isEmpty) {
+                    Utils.flushBarErrorMessage(
+                        'Please Fill All Feilds', context);
+                  } else if (passwordController.text.length < 6) {
+                    Utils.flushBarErrorMessage(
+                        'Password Must Be 6 Characters', context);
+                  } else {
+                    Map data = {
+                      "email": "jaff@gmail.com",
+                      "password": "JAFFARempire@123"
+                    };
+                    authViewModel.loginApi(data, context);
+                  }
+                }),
             const SizedBox(
               height: 20,
             ),
