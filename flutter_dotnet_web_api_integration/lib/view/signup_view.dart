@@ -7,14 +7,14 @@ import 'package:flutter_dotnet_web_api_integration/utils/utils.dart';
 import 'package:provider/provider.dart';
 import '../view model/auth_view_model.dart';
 
-class SigmUpView extends StatefulWidget {
-  const SigmUpView({Key? key}) : super(key: key);
+class SignUpView extends StatefulWidget {
+  const SignUpView({Key? key}) : super(key: key);
 
   @override
-  State<SigmUpView> createState() => _LoginScreenState();
+  State<SignUpView> createState() => _LoginScreenState();
 }
 
-class _LoginScreenState extends State<SigmUpView> {
+class _LoginScreenState extends State<SignUpView> {
   TextEditingController firstNameController = TextEditingController();
   TextEditingController lastNameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
@@ -27,7 +27,7 @@ class _LoginScreenState extends State<SigmUpView> {
   FocusNode passwordFocusNode = FocusNode();
   FocusNode confirmPasswordFocusNode = FocusNode();
 
-  ValueNotifier<bool> _obscureText = ValueNotifier<bool>(false);
+  ValueNotifier<bool> _obscureText = ValueNotifier<bool>(true);
 
   @override
   void dispose() {
@@ -51,7 +51,8 @@ class _LoginScreenState extends State<SigmUpView> {
     final authViewModel = Provider.of<AuthViewModel>(context);
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Login"),
+        title: const Text("SignUp"),
+        automaticallyImplyLeading: false, 
       ),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
@@ -138,6 +139,9 @@ class _LoginScreenState extends State<SigmUpView> {
                 );
               },
             ),
+            const SizedBox(
+              height: 20,
+            ),
             DefaultButton(title: 'Login', loading: authViewModel.authLoading, onPressed: (){
               if(emailController.text.isEmpty && passwordController.text.isEmpty){
                 Utils.flushBarErrorMessage('Please Fill All Feilds', context);
@@ -156,7 +160,10 @@ class _LoginScreenState extends State<SigmUpView> {
             const SizedBox(
               height: 20,
             ),
+            
             Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Text('Have An Account?'),
                 TextButton(
