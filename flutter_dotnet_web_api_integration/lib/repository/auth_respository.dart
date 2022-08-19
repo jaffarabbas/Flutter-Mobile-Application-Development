@@ -20,6 +20,7 @@ class AuthRepository{
       dynamic response = await _apiServices.getPostApiResponce(AppUrl.register, data);
       return response;
     }catch(error){
+        print("asdsadasdasdsd$error");
       throw error;
     }
   }
