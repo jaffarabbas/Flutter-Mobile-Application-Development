@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotnet_web_api_integration/utils/routes/routes_names.dart';
 import 'package:flutter_dotnet_web_api_integration/view/login_view.dart';
+import 'package:flutter_dotnet_web_api_integration/view/signup_view.dart';
 import 'package:flutter_dotnet_web_api_integration/view/splash_view.dart';
 
 import '../../view/home_screen.dart';
@@ -16,6 +17,9 @@ class Routes {
       case RoutesName.login:
         return MaterialPageRoute(
             builder: (BuildContext context) => LoginView());
+      case RoutesName.signup:
+        return MaterialPageRoute(
+            builder: (BuildContext context) => SignUpView());
       case RoutesName.splash:
         return MaterialPageRoute(
             builder: (BuildContext context) => SplashView());
