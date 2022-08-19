@@ -42,7 +42,7 @@ class Utils {
   static snackBarGenerater(String message, BuildContext context) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        backgroundColor: Colors.red,
+        backgroundColor: Colors.green,
         content: Text(message),
         duration: const Duration(seconds: 3),
       ),
