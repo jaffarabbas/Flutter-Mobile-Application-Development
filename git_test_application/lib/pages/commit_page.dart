@@ -117,7 +117,7 @@ class _CommitPageState extends State<CommitPage> {
                     return ListTile(
                         title: InkWell(
                       onTap: () {
-                        CommitFiles(widget.data[index]);
+                        // CommitFiles(widget.data[index]);
                       },
                       child: Text("$index ${widget.data[index]}"),
                     ));
@@ -126,8 +126,8 @@ class _CommitPageState extends State<CommitPage> {
               ),
               InkWell(
                 onTap: () {
-                  // Committer(fileForCommit)
-                  //     .whenComplete(() => PushCommitedFile());
+                  print("asda");
+                  Committer(widget.data);
                 },
                 child: Container(
                   color: Colors.blueAccent,
