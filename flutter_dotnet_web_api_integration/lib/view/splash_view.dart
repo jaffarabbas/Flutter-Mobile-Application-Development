@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_dotnet_web_api_integration/res/colors.dart';
-
-import '../view model/services/splash_services.dart';
+import 'package:flutter_dotnet_web_api_integration/view_model/services/splash_services.dart';
 
 class SplashView extends StatefulWidget {
   const SplashView({Key? key}) : super(key: key);
