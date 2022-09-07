@@ -4,8 +4,8 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_dotnet_web_api_integration/res/components/defaultButton.dart';
 import 'package:flutter_dotnet_web_api_integration/utils/routes/routes_names.dart';
 import 'package:flutter_dotnet_web_api_integration/utils/utils.dart';
+import 'package:flutter_dotnet_web_api_integration/view_model/auth_view_model.dart';
 import 'package:provider/provider.dart';
-import '../view model/auth_view_model.dart';
 
 class SignUpView extends StatefulWidget {
   const SignUpView({Key? key}) : super(key: key);
