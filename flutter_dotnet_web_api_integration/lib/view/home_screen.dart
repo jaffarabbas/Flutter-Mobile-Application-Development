@@ -3,7 +3,7 @@ import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_dotnet_web_api_integration/model/user_model.dart';
 import 'package:flutter_dotnet_web_api_integration/utils/routes/routes_names.dart';
-import 'package:flutter_dotnet_web_api_integration/view%20model/user_view_model.dart';
+import 'package:flutter_dotnet_web_api_integration/view_model/user_view_model.dart';
 import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
