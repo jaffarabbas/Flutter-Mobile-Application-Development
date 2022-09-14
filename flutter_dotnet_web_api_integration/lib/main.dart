@@ -4,9 +4,11 @@ import 'package:flutter_dotnet_web_api_integration/utils/routes/routes_names.dar
 import 'package:flutter_dotnet_web_api_integration/view_model/auth_view_model.dart';
 import 'package:flutter_dotnet_web_api_integration/view_model/user_view_model.dart';
 import 'package:provider/provider.dart';
+
 void main() {
   runApp(const MyApp());
 }
+
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
