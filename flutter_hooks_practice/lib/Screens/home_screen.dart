@@ -8,10 +8,11 @@ class HomePage extends HookWidget {
       const Duration(seconds: 1), (_) => DateTime.now().toIso8601String());
   @override
   Widget build(BuildContext context) {
+    final date = useStream(getTime());
     return Scaffold(
       appBar: AppBar(),
       body: Center(
-        child: Text('Hello'),
+        child: Text(date.data ?? 'Hello'),
       ),
     );
   }
