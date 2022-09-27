@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "605971871935",
+    "firebase_url": "https://water-level-indicator-19529-default-rtdb.firebaseio.com",
+    "project_id": "water-level-indicator-19529",
+    "storage_bucket": "water-level-indicator-19529.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:605971871935:android:e74aded15296a23efa2e0a",
+        "android_client_info": {
+          "package_name": "com.example.flutter_firebase_integration"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "605971871935-uk3pvf5qngimqu2nj8j0cm467piul69o.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyARgal3FKxUTne4xJ58D-UpAAu9eDKzFjw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "605971871935-uk3pvf5qngimqu2nj8j0cm467piul69o.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
