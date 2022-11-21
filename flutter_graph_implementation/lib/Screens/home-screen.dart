@@ -17,7 +17,7 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Column(
           children: [
             LineChartExample(),
-            LineChart2()
+            // LineChart2()
           ],
         ),
       ),
