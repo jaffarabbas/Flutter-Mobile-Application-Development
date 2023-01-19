@@ -1,6 +1,8 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -10,33 +12,50 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  // TextEditingController player1 = TextEditingController();
+  // TextEditingController player2 = TextEditingController();
+  double player1value = 0.0;
+  double player2value = 0.0;
+  double increment = 0.4;
+  String won = "";
   @override
   Widget build(BuildContext context) {
-    TextEditingController player1 = TextEditingController();
-    TextEditingController player2 = TextEditingController();
-    double player1value = 0.0;
-    double player2value = 0.0;
-
-    void startRace() async{
-      print("sdasdasdas");
-      // setState(() {
-        while (player1value <= 100.0 && player2value <= 100.0) {
-        setState(() {
-          player1value += 0.1;
-          player2value += 0.2;
-          print(player1value);
-          print(player2value);
-        });
-         player1.text = player1value.toString();
-         player2.text =  player2value.toString();
-      }
-      // });
+    void update(double value, double value2) {
+      setState(() {
+        if (player1value < 1.0 && player2value < 1.0) {
+          player1value += value;
+          player2value += value2;
+        }
+      });
     }
 
- @override
-    void initState() {
-      super.initState();
-      // Timer.periodic(Duration(seconds: 1), (timer) => startRace());
+    void startRace() async {
+      setState(() async {
+        while (player1value <= 1.0 && player2value <= 1.0) {
+          await Future.delayed(Duration(milliseconds: 200));
+          double player1score = Random().nextDouble() * increment;
+          double player2score = Random().nextDouble() * increment;
+          update(player1score, player2score);
+        }
+        if (player1value > 1.0) {
+          player1value = 1.0;
+        } else if (player2value > 1.0) {
+          player2value = 1.0;
+        }
+        if (player1value > player2value) {
+          won = "Player 1 Won";
+        } else {
+          won = "Player 2 Won";
+        }
+      });
+    }
+
+    void reset() {
+      setState(() {
+        player1value = 0.0;
+        player2value = 0.0;
+        won = "";
+      });
     }
 
     return Scaffold(
@@ -49,15 +68,20 @@ class _HomePageState extends State<HomePage> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-               Text(
-                '${player1.value.text} ${player2.value.text}',
-                style: TextStyle(fontSize: 30),
-              ),
               SizedBox(
                 height: 20,
               ),
               Text(
                 'Run a Race',
+                style: TextStyle(fontSize: 30),
+              ),
+              won != ""
+                  ? SizedBox(
+                      height: 20,
+                    )
+                  : Container(),
+              Text(
+                won,
                 style: TextStyle(fontSize: 30),
               ),
               SizedBox(
@@ -76,15 +100,7 @@ class _HomePageState extends State<HomePage> {
                         style: TextStyle(fontSize: 15),
                       ),
                     ),
-                    // Container(
-                    //   width: 250,
-                    //   child: LinearProgressIndicator(
-                    //     value: double.parse(player1.text.toString()), // a value between 0 and 1
-                    //     backgroundColor: Colors.grey,
-                    //     minHeight: 30,
-                    //     valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
-                    //   ),
-                    // ),
+                    LinearBar(vlaue: player1value),
                   ],
                 ),
               ),
@@ -95,7 +111,8 @@ class _HomePageState extends State<HomePage> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      '${player1value}%',
+                      // '${(player1value * 100).toStringAsFixed(2)}%',
+                      '${(player1value).toStringAsFixed(2)}%',
                       style: TextStyle(fontSize: 15),
                     ),
                     Text(
@@ -121,15 +138,16 @@ class _HomePageState extends State<HomePage> {
                         style: TextStyle(fontSize: 15),
                       ),
                     ),
+                    LinearBar(vlaue: player2value),
                     // Container(
                     //   width: 250,
                     //   child: LinearProgressIndicator(
-                    //     value: double.parse(player2.text.toString()), // a value between 0 and 1
+                    //     value: player2value, // a value between 0 and 1
                     //     backgroundColor: Colors.grey,
                     //     minHeight: 30,
                     //     valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
                     //   ),
-                    // ),
+                    //
                   ],
                 ),
               ),
@@ -140,7 +158,8 @@ class _HomePageState extends State<HomePage> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      '${player2value}%',
+                      // '${((player2value * 100).toStringAsFixed(2))}%',
+                      '${((player2value).toStringAsFixed(2))}%',
                       style: TextStyle(fontSize: 15),
                     ),
                     Text(
@@ -163,8 +182,8 @@ class _HomePageState extends State<HomePage> {
                         onPressed: () {
                           // startRace();
                           //  setState(() {
-                            startRace();
-                            //  Timer.periodic(Duration(seconds: 1), (timer) => startRace());
+                          startRace();
+                          //  Timer.periodic(Duration(seconds: 1), (timer) => startRace());
                           //  });
                         },
                         child: Text('Start'),
@@ -173,7 +192,9 @@ class _HomePageState extends State<HomePage> {
                     Container(
                       margin: const EdgeInsets.only(left: 20),
                       child: ElevatedButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          reset();
+                        },
                         child: Text('Reset'),
                       ),
                     ),
@@ -183,6 +204,24 @@ class _HomePageState extends State<HomePage> {
             ],
           ),
         ),
+      ),
+    );
+  }
+}
+
+class LinearBar extends StatelessWidget {
+  double vlaue;
+  LinearBar({super.key, required this.vlaue});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 250,
+      child: LinearProgressIndicator(
+        value: vlaue, // a value between 0 and 1
+        backgroundColor: Colors.grey,
+        minHeight: 30,
+        valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
       ),
     );
   }
