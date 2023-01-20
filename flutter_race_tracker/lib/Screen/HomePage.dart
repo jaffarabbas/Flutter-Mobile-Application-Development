@@ -12,46 +12,58 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  // TextEditingController player1 = TextEditingController();
-  // TextEditingController player2 = TextEditingController();
   double player1value = 0.0;
   double player2value = 0.0;
-  double increment = 0.4;
+  double increment = 0.04;
+  double player1score = 0.0;
+  double player2score = 0.0;
   String won = "";
   @override
   Widget build(BuildContext context) {
     void update(double value, double value2) {
       setState(() {
-        if (player1value < 1.0 && player2value < 1.0) {
-          player1value += value;
-          player2value += value2;
-        }
+        player1value += value;
+        player2value += value2;
       });
     }
 
+    void result() {
+      if (player1value > player2value) {
+        won = "Player 1 Won";
+      } else {
+        won = "Player 2 Won";
+      }
+    }
+
+    void setScoreToResult() {
+      if (player1value > 1.0) {
+        player1value = 1.0;
+      } else if (player2value > 1.0) {
+        player2value = 1.0;
+      }
+    }
+
     void startRace() async {
-      setState(() async {
-        while (player1value <= 1.0 && player2value <= 1.0) {
+      while (true) {
+        if (player1value < 1.0 && player2value < 1.0) {
           await Future.delayed(Duration(milliseconds: 200));
-          double player1score = Random().nextDouble() * increment;
-          double player2score = Random().nextDouble() * increment;
-          update(player1score, player2score);
-        }
-        if (player1value > 1.0) {
-          player1value = 1.0;
-        } else if (player2value > 1.0) {
-          player2value = 1.0;
-        }
-        if (player1value > player2value) {
-          won = "Player 1 Won";
+          setState(() {
+            player1score = Random().nextDouble() * increment;
+            player2score = Random().nextDouble() * increment;
+            update(player1score, player2score);
+            setScoreToResult();
+          });
         } else {
-          won = "Player 2 Won";
+          break;
         }
-      });
+      }
+      result();
     }
 
     void reset() {
       setState(() {
+        player1score = 0.0;
+        player2score = 0.0;
         player1value = 0.0;
         player2value = 0.0;
         won = "";
@@ -112,7 +124,7 @@ class _HomePageState extends State<HomePage> {
                   children: [
                     Text(
                       // '${(player1value * 100).toStringAsFixed(2)}%',
-                      '${(player1value).toStringAsFixed(2)}%',
+                      '${(player1value * 100).toStringAsFixed(2)}%',
                       style: TextStyle(fontSize: 15),
                     ),
                     Text(
@@ -139,15 +151,6 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ),
                     LinearBar(vlaue: player2value),
-                    // Container(
-                    //   width: 250,
-                    //   child: LinearProgressIndicator(
-                    //     value: player2value, // a value between 0 and 1
-                    //     backgroundColor: Colors.grey,
-                    //     minHeight: 30,
-                    //     valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
-                    //   ),
-                    //
                   ],
                 ),
               ),
@@ -159,7 +162,7 @@ class _HomePageState extends State<HomePage> {
                   children: [
                     Text(
                       // '${((player2value * 100).toStringAsFixed(2))}%',
-                      '${((player2value).toStringAsFixed(2))}%',
+                      '${((player2value * 100).toStringAsFixed(2))}%',
                       style: TextStyle(fontSize: 15),
                     ),
                     Text(
@@ -180,11 +183,7 @@ class _HomePageState extends State<HomePage> {
                       margin: const EdgeInsets.only(left: 20),
                       child: ElevatedButton(
                         onPressed: () {
-                          // startRace();
-                          //  setState(() {
                           startRace();
-                          //  Timer.periodic(Duration(seconds: 1), (timer) => startRace());
-                          //  });
                         },
                         child: Text('Start'),
                       ),
