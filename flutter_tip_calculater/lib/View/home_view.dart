@@ -36,91 +36,93 @@ class _HomeViewState extends State<HomeView> {
       appBar: AppBar(
         title: Text('Tip Calculator'),
       ),
-      body: Container(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Container(
-              padding: EdgeInsets.all(20),
-              child: Text(
-                'Tip Calculator',
-                style: TextStyle(
-                  fontSize: 30,
-                  fontWeight: FontWeight.bold,
+      body: SingleChildScrollView(
+        child: Container(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Container(
+                padding: EdgeInsets.all(20),
+                child: Text(
+                  'Tip Calculator',
+                  style: TextStyle(
+                    fontSize: 30,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
-            ),
-            Container(
-              padding: EdgeInsets.all(20),
-              child: TextField(
-                controller: billAmountController,
-                decoration: InputDecoration(
-                    hintText: 'Enter Bill Amount',
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    )),
+              Container(
+                padding: EdgeInsets.all(20),
+                child: TextField(
+                  controller: billAmountController,
+                  decoration: InputDecoration(
+                      hintText: 'Enter Bill Amount',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      )),
+                ),
               ),
-            ),
-            Container(
-              padding: EdgeInsets.all(20),
-              child: TextField(
-                controller: numberOfPeopleController,
-                decoration: InputDecoration(
-                    hintText: 'Number Of People',
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    )),
+              Container(
+                padding: EdgeInsets.all(20),
+                child: TextField(
+                  controller: numberOfPeopleController,
+                  decoration: InputDecoration(
+                      hintText: 'Number Of People',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      )),
+                ),
               ),
-            ),
-            Container(
-              padding: EdgeInsets.all(20),
-              child: TextField(
-                controller: tipPercentageController,
-                decoration: InputDecoration(
-                    hintText: 'Enter Tip %',
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    )),
+              Container(
+                padding: EdgeInsets.all(20),
+                child: TextField(
+                  controller: tipPercentageController,
+                  decoration: InputDecoration(
+                      hintText: 'Enter Tip %',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      )),
+                ),
               ),
-            ),
-            Container(
-              width: double.infinity,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    padding: EdgeInsets.all(20),
-                    child: Text(
-                      'Per Person Tip : Rs $perPersonTip',
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
+              Container(
+                width: double.infinity,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      padding: EdgeInsets.all(20),
+                      child: Text(
+                        'Per Person Tip : Rs $perPersonTip',
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
-                  ),
-                  Container(
-                    padding: EdgeInsets.all(20),
-                    child: Text(
-                      'Per Person Total : Rs $perPersonTotal',
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
+                    Container(
+                      padding: EdgeInsets.all(20),
+                      child: Text(
+                        'Per Person Total : Rs $perPersonTotal',
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-            Container(
-              padding: EdgeInsets.all(20),
-              child: ElevatedButton(
-                onPressed: () => calculateTip(),
-                child: Text('Calculate'),
+              Container(
+                padding: EdgeInsets.all(20),
+                child: ElevatedButton(
+                  onPressed: () => calculateTip(),
+                  child: Text('Calculate'),
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
