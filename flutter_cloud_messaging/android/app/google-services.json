@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "222938276003",
+    "project_id": "flutter-fcm-4715b",
+    "storage_bucket": "flutter-fcm-4715b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:222938276003:android:a67e2f8268a9dc32bd1f16",
+        "android_client_info": {
+          "package_name": "com.darklord.fcmapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCg6Y6fRejMKwRAdqkU5h1tgWhbc0iU1aY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

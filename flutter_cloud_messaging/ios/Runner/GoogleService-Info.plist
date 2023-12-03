@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>API_KEY</key>
+	<string>AIzaSyAZ5olIGr9FOZWQTiFTbfvrmEeGjT4tL-c</string>
+	<key>GCM_SENDER_ID</key>
+	<string>222938276003</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.flutterCloudMessaging</string>
+	<key>PROJECT_ID</key>
+	<string>flutter-fcm-4715b</string>
+	<key>STORAGE_BUCKET</key>
+	<string>flutter-fcm-4715b.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:222938276003:ios:72182a9754502bf5bd1f16</string>
+</dict>
+</plist>
