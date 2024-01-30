@@ -29,11 +29,28 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Flutter FCM'),
+        title: const Text('Flutter FCM'),
       ),
-      body: Container(
-        child: Text('Test'),
-      ),
+      body: Center(
+        child: Container(
+            padding: const EdgeInsets.all(2),
+            width: 200,
+            height: 50,
+            decoration: const BoxDecoration(
+                color: Colors.amber,
+                borderRadius: BorderRadius.all(Radius.circular(20)),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black,
+                    blurRadius: 1,
+                  ),
+                ]
+            ),
+            child: const Center(
+              child: Text('Test',style: TextStyle(fontSize: 20),),
+            )
+        ),
+      )
     );
   }
 }
