@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "778421452148",
+    "project_id": "angular-test-firebase-f11cb",
+    "storage_bucket": "angular-test-firebase-f11cb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:778421452148:android:b0a24c8a530e4594d60021",
+        "android_client_info": {
+          "package_name": "com.ffapp.com"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBvwiizClWqECcQ9PtZt2ZipV5n_5MEGtg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:778421452148:android:fd61383b1519d1f4d60021",
+        "android_client_info": {
+          "package_name": "com.ffapp.flutter_firebase"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBvwiizClWqECcQ9PtZt2ZipV5n_5MEGtg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
