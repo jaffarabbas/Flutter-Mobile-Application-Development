@@ -7,8 +7,8 @@ class GrocriesData {
       'description': 'Bluetooth wireless headphones with noise cancellation.',
       'category': 'Electronics',
       'inStock': true,
-      'image':
-          'https://powerhouseexpress.com.pk/cdn/shop/files/soundpeats-a6-headphone.jpg?v=1704275368' // Placeholder image
+      'imageUrl':
+          'https://powerhouseexpress.com.pk/cdn/shop/files/soundpeats-a6-headphone.jpg?v=1704275368' // Placeholder imageUrl
     },
     {
       'id': 102,
@@ -17,7 +17,7 @@ class GrocriesData {
       'description': 'Fitness tracking smartwatch with heart rate monitor.',
       'category': 'Wearables',
       'inStock': false,
-      'image': 'https://rhizmall.pk/wp-content/uploads/2024/01/Y20.webp'
+      'imageUrl': 'https://rhizmall.pk/wp-content/uploads/2024/01/Y20.webp'
     },
     {
       'id': 103,
@@ -26,8 +26,8 @@ class GrocriesData {
       'description': '50-inch 4K Ultra HD Smart TV with HDR support.',
       'category': 'Electronics',
       'inStock': true,
-      'image':
-          'https://www.sony.com/image/88de0249f4df8101f60bccc4aaa57779?fmt=pjpeg&wid=330&bgcolor=FFFFFF&bgc=FFFFFF'
+      'imageUrl':
+          'https://friendshome.pk/cdn/shop/files/UntitledProject-2024-04-28T132029.169.jpg?v=1714292442&width=1000'
     },
     {
       'id': 104,
@@ -36,7 +36,7 @@ class GrocriesData {
       'description': '15-inch laptop with 16GB RAM and 512GB SSD.',
       'category': 'Computers',
       'inStock': true,
-      'image':
+      'imageUrl':
           'https://discountstore.pk/cdn/shop/files/HPLaptop15.6inch_13thGen_IntelCorei716GBRAM512GBSSD_Silver_2.jpg?v=1713965383'
     }
   ];

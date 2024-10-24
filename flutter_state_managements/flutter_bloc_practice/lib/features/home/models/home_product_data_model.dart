@@ -1,10 +1,10 @@
 class ProductDataModel {
-  final int id;
+  final String id;
   final String name;
-  final double price;
+  final String price;
   final String description;
   final String category;
-  final bool inStock;
+  final String inStock;
   final String imageUrl;
 
   ProductDataModel({
@@ -26,7 +26,7 @@ class ProductDataModel {
       description: json['description'],
       category: json['category'],
       inStock: json['inStock'],
-      imageUrl: json['image'],
+      imageUrl: json['imageUrl'],
     );
   }
 
@@ -39,7 +39,7 @@ class ProductDataModel {
       'description': description,
       'category': category,
       'inStock': inStock,
-      'image': imageUrl,
+      'imageUrl': imageUrl,
     };
   }
 }
