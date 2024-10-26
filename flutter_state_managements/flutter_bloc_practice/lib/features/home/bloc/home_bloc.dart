@@ -1,7 +1,9 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:flutter_bloc_practice/data/cart_items.dart';
 import 'package:flutter_bloc_practice/data/grocries_data.dart';
+import 'package:flutter_bloc_practice/data/wishlist_items.dart';
 import 'package:flutter_bloc_practice/features/home/models/home_product_data_model.dart';
 import 'package:flutter_bloc_practice/features/home/ui/home.dart';
 import 'package:meta/meta.dart';
@@ -25,25 +27,36 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     await Future.delayed(Duration(seconds: 3));
     emit(HomeLoadedSuccessState(
         products: GrocriesData.products
-            .map((data) => ProductDataModel(
-                id: data['id'].toString(),
-                name: data['name'],
-                price: data['price'].toString(),
-                description: data['description'],
-                category: data['category'],
-                inStock: data['inStock'].toString(),
-                imageUrl: data['imageUrl']))
+            .map(
+              (data) => ProductDataModel(
+                  id: data['id'].toString(),
+                  name: data['name'],
+                  price: data['price'].toString(),
+                  description: data['description'],
+                  category: data['category'],
+                  inStock: data['inStock'].toString(),
+                  imageUrl: data['imageUrl'],
+                  isInCart: data['isInCart'],
+                  isInWishList: data['isInWishList']),
+            )
             .toList()));
   }
 
   FutureOr<void> homeProductWishListButtonClickedEvent(
-      HomeProductWishListButtonClickedEvent event, Emitter<HomeState> emitter) {
+      HomeProductWishListButtonClickedEvent event, Emitter<HomeState> emit) {
     print("wishlist product clicked");
+    wishListItems.add(event.dataModel);
+    emit(HomeProductItemWishListedActionState());
   }
 
   FutureOr<void> homeProductCartButtonClickedEvent(
-      HomeProductCartButtonClickedEvent event, Emitter<HomeState> emitter) {
-    print("cart product clicked");
+      HomeProductCartButtonClickedEvent event, Emitter<HomeState> emit) {
+    if (!cartItems.contains(event.dataModel)) {
+      cartItems.add(event.dataModel);
+      emit(HomeProductItemCartedActionState());
+    } else {
+      emit(HomeProductItemCartContainActionState());
+    }
   }
 
   FutureOr<void> homeWishListButtonNavigateEvent(

@@ -6,6 +6,8 @@ class ProductDataModel {
   final String category;
   final String inStock;
   final String imageUrl;
+  final bool isInCart;
+  final bool isInWishList;
 
   ProductDataModel({
     required this.id,
@@ -15,6 +17,8 @@ class ProductDataModel {
     required this.category,
     required this.inStock,
     required this.imageUrl,
+    required this.isInCart,
+    required this.isInWishList,
   });
 
   // You can also add a factory constructor to create a product from a map (JSON parsing)
@@ -27,6 +31,8 @@ class ProductDataModel {
       category: json['category'],
       inStock: json['inStock'],
       imageUrl: json['imageUrl'],
+      isInCart: json['isInCart'],
+      isInWishList: json['isInWishList'],
     );
   }
 
@@ -40,6 +46,8 @@ class ProductDataModel {
       'category': category,
       'inStock': inStock,
       'imageUrl': imageUrl,
+      'isInCart': isInCart,
+      'isInWishList': isInWishList
     };
   }
 }

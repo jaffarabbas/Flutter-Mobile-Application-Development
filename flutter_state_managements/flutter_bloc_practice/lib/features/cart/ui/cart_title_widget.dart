@@ -1,18 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc_practice/features/cart/bloc/cart_bloc.dart';
 import 'package:flutter_bloc_practice/features/home/bloc/home_bloc.dart';
 import 'package:flutter_bloc_practice/features/home/models/home_product_data_model.dart';
 
-class ProductTitleWidget extends StatefulWidget {
+class CartTitleWidget extends StatelessWidget {
   final ProductDataModel productDataModel;
-  final HomeBloc homeBloc;
-  const ProductTitleWidget(
-      {super.key, required this.productDataModel, required this.homeBloc});
+  final CartBloc cartBloc;
+  const CartTitleWidget(
+      {super.key, required this.productDataModel, required this.cartBloc});
 
-  @override
-  State<ProductTitleWidget> createState() => _ProductTitleWidgetState();
-}
-
-class _ProductTitleWidgetState extends State<ProductTitleWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -38,19 +34,10 @@ class _ProductTitleWidgetState extends State<ProductTitleWidget> {
             children: [
               IconButton(
                   onPressed: () {
-                    widget.homeBloc.add(HomeProductWishListButtonClickedEvent(
-                        dataModel: widget.productDataModel));
+                    cartBloc.add(CartRemoveFromCartEvent(
+                        productDataModel: productDataModel));
                   },
-                  icon: const Icon(Icons.favorite_border)),
-              IconButton(
-                onPressed: () {
-                  widget.homeBloc.add(HomeProductCartButtonClickedEvent(
-                      dataModel: widget.productDataModel));
-                },
-                icon: Icon(widget.productDataModel.isInCart
-                    ? Icons.shopping_bag
-                    : Icons.shopping_bag_outlined),
-              )
+                  icon: const Icon(Icons.delete))
             ],
           ),
           Container(
@@ -59,30 +46,30 @@ class _ProductTitleWidgetState extends State<ProductTitleWidget> {
             decoration: BoxDecoration(
                 image: DecorationImage(
                     fit: BoxFit.contain,
-                    image: NetworkImage(widget.productDataModel.imageUrl))),
+                    image: NetworkImage(productDataModel.imageUrl))),
           ),
           Text(
-            "${widget.productDataModel.id} - ${widget.productDataModel.name}",
+            "${productDataModel.id} - ${productDataModel.name}",
             style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                "Rs. ${widget.productDataModel.price}",
+                "Rs. ${productDataModel.price}",
                 style: TextStyle(fontSize: 19, fontWeight: FontWeight.bold),
               ),
               SizedBox(
                 width: 10,
               ),
               Text(
-                widget.productDataModel.category,
+                productDataModel.category,
                 style: TextStyle(fontSize: 19, fontWeight: FontWeight.bold),
               ),
             ],
           ),
-          Text(widget.productDataModel.description),
-          Text(widget.productDataModel.inStock),
+          Text(productDataModel.description),
+          Text(productDataModel.inStock),
         ],
       ),
     );
