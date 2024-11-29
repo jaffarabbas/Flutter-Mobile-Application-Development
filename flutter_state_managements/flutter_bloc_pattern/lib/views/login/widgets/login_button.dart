@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_bloc_pattern/bloc/login_bloc.dart';
 import 'package:flutter_bloc_pattern/utils/enums.dart';
+import 'package:flutter_bloc_pattern/utils/extensions/flush_bar_helper.dart';
 
 class LoginButton extends StatelessWidget {
   final formKey;
@@ -14,35 +15,10 @@ class LoginButton extends StatelessWidget {
           current.postApiStatus != previous.postApiStatus,
       listener: (context, state) {
         if (state.postApiStatus == PostApiStatus.error) {
-          ScaffoldMessenger.of(context)
-            ..hideCurrentSnackBar()
-            ..showSnackBar(
-              SnackBar(
-                content: Text(
-                  state.message.toString(),
-                ),
-              ),
-            );
+          context.flushBarErrorMessage(message: state.message);
         }
         if (state.postApiStatus == PostApiStatus.success) {
-          ScaffoldMessenger.of(context)
-            ..hideCurrentSnackBar()
-            ..showSnackBar(
-              SnackBar(
-                content: Text(
-                  state.message.toString(),
-                ),
-              ),
-            );
-        }
-        if (state.postApiStatus == PostApiStatus.loading) {
-          ScaffoldMessenger.of(context)
-            ..hideCurrentSnackBar()
-            ..showSnackBar(
-              const SnackBar(
-                content: Text('Submitting'),
-              ),
-            );
+          context.flushBarSuccessMessage(message: "Logins successfully");
         }
       },
       child: BlocBuilder<LoginBloc, LoginStates>(
