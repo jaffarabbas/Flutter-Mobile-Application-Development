@@ -3,6 +3,7 @@ import 'package:flutter_bloc_pattern/config/components/internet_exception_widgit
 import 'package:flutter_bloc_pattern/config/components/round_button.dart';
 import 'package:flutter_bloc_pattern/config/routes/routes.dart';
 import 'package:flutter_bloc_pattern/config/routes/routes_name.dart';
+import 'package:flutter_bloc_pattern/services/splash/splash_service.dart';
 import 'package:flutter_bloc_pattern/views/home/home_screen.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -13,6 +14,14 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  SplashService splashService = SplashService();
+  @override
+  void initState() {
+    // TODO: implement initState
+    splashService.isLogin(context);
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
