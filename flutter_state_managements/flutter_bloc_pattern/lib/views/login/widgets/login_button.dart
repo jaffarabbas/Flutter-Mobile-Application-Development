@@ -32,7 +32,10 @@ class LoginButton extends StatelessWidget {
               }
             },
             child: state.postApiStatus == PostApiStatus.loading
-                ? const CircularProgressIndicator()
+                ? const Padding(
+                    padding: EdgeInsets.all(10),
+                    child: CircularProgressIndicator(),
+                  )
                 : const Text('Login'),
           );
         },

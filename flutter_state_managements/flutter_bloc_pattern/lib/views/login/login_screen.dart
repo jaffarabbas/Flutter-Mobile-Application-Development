@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_bloc_pattern/bloc/login_bloc.dart';
+import 'package:flutter_bloc_pattern/main.dart';
+import 'package:flutter_bloc_pattern/repository/auth/login_repository.dart';
 import 'package:flutter_bloc_pattern/views/login/widgets/widgets.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -19,7 +21,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   void initState() {
     // TODO: implement initState
-    loginBloc = LoginBloc();
+    loginBloc = LoginBloc(loginRepository: getIt());
     super.initState();
   }
 
@@ -44,6 +46,9 @@ class _LoginScreenState extends State<LoginScreen> {
                   height: 20,
                 ),
                 PasswrodTextFeild(passwordFocusNode: passwordFocusNode),
+                const SizedBox(
+                  height: 20,
+                ),
                 LoginButton(formKey: _formKey)
               ],
             ),
