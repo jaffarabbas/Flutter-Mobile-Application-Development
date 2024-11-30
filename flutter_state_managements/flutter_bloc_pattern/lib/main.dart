@@ -3,8 +3,6 @@ import 'package:flutter_bloc_pattern/config/routes/routes.dart';
 import 'package:flutter_bloc_pattern/config/routes/routes_name.dart';
 import 'package:flutter_bloc_pattern/repository/auth/login_http_api_repository.dart';
 import 'package:flutter_bloc_pattern/repository/auth/login_repository.dart';
-import 'package:flutter_bloc_pattern/views/home/home_screen.dart';
-import 'package:flutter_bloc_pattern/views/splash/splash_screen.dart';
 import 'package:get_it/get_it.dart';
 
 GetIt getIt = GetIt.instance;
