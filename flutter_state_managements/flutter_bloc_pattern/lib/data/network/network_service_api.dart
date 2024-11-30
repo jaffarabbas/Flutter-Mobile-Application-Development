@@ -19,6 +19,7 @@ class NetworkServiceApi implements BaseApiService {
     } on TimeoutException {
       throw FetchDataException('Time out Try again');
     }
+    return jsonResponse;
   }
 
   @override
