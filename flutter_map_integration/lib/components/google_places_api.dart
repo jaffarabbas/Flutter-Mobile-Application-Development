@@ -35,11 +35,6 @@ class GetPlacesApiState extends State<GetPlacesApi> {
   }
 
   void onChange(){
-    if(_sessionToken == null){
-      setState(() {
-        _sessionToken = uuid.v4();
-      });
-    }
     getSuggestion(_searchController.text);
   }
 
