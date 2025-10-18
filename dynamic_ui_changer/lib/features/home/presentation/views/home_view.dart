@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/router/app_router.dart';
 import '../../../../core/utils/extensions.dart';
+import '../../../../shared/widgets/custom_app_bar.dart';
 import '../viewmodels/providers.dart';
 import '../widgets/user_card.dart';
 
@@ -29,14 +30,14 @@ class _HomeViewState extends ConsumerState<HomeView> {
     final viewModel = ref.read(homeViewModelProvider.notifier);
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Dynamic Layout Changer'),
-        backgroundColor: Colors.amber,
-        centerTitle: true,
+      appBar: CustomAppBar(
+        title: 'Dynamic Layout Changer',
+        showBackButton: false, // No back button on home screen
         actions: [
           IconButton(
             icon: const Icon(Icons.refresh),
             onPressed: () => viewModel.fetchUsers(),
+            tooltip: 'Refresh Users',
           ),
         ],
       ),

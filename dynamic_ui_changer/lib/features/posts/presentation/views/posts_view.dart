@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../../../shared/widgets/custom_app_bar.dart';
 import '../viewmodels/providers.dart';
 import '../widgets/post_card.dart';
 
@@ -24,10 +25,9 @@ class _PostsViewState extends ConsumerState<PostsView> {
     final viewModel = ref.read(postsViewModelProvider.notifier);
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Posts from JSONPlaceholder'),
-        backgroundColor: Colors.amber,
-        centerTitle: true,
+      appBar: CustomAppBar(
+        title: 'Posts from JSONPlaceholder',
+        showBackButton: true, // Show back button to return to home
         actions: [
           IconButton(
             icon: const Icon(Icons.refresh),
