@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:provider_state_mangement/provider/favourite_provider.dart';
 
 class FavListScreen extends StatefulWidget {
-  FavListScreen({Key? key}) : super(key: key);
+  const FavListScreen({Key? key}) : super(key: key);
 
   @override
   State<FavListScreen> createState() => _FavListScreenState();

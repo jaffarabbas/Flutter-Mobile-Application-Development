@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:provider_state_mangement/provider/theme_changer.dart';
 
 class DarkThemeScreen extends StatefulWidget {
-  DarkThemeScreen({Key? key}) : super(key: key);
+  const DarkThemeScreen({Key? key}) : super(key: key);
 
   @override
   State<DarkThemeScreen> createState() => _DarkThemeScreenState();
@@ -20,19 +20,19 @@ class _DarkThemeScreenState extends State<DarkThemeScreen> {
       body: Column(
         children: [
           RadioListTile<ThemeMode>(
-              title: Text('Light'),
+              title: const Text('Light'),
               value: ThemeMode.light,
               groupValue: themeChanger.themeMode,
               onChanged: themeChanger.setThemeMode
           ),
           RadioListTile<ThemeMode>(
-              title: Text('Dark'),
+              title: const Text('Dark'),
               value: ThemeMode.dark,
               groupValue: themeChanger.themeMode,
               onChanged: themeChanger.setThemeMode
           ),
           RadioListTile<ThemeMode>(
-              title: Text('System'),
+              title: const Text('System'),
               value: ThemeMode.system,
               groupValue: themeChanger.themeMode,
               onChanged: themeChanger.setThemeMode

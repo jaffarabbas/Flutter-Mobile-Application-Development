@@ -4,7 +4,7 @@ import 'package:provider_state_mangement/pages/favlist_screen.dart';
 import 'package:provider_state_mangement/provider/favourite_provider.dart';
 
 class Favouritepage extends StatefulWidget {
-  Favouritepage({Key? key}) : super(key: key);
+  const Favouritepage({Key? key}) : super(key: key);
 
   @override
   State<Favouritepage> createState() => _FavouritepageState();
@@ -19,7 +19,7 @@ class _FavouritepageState extends State<Favouritepage> {
         title: const Text('Favourite Page'),
         actions: [
           IconButton(
-            icon: Icon(Icons.favorite,color: Colors.white,),
+            icon: const Icon(Icons.favorite,color: Colors.white,),
             onPressed: () {
               Navigator.push(context, MaterialPageRoute(builder: ((context) => FavListScreen())));
             },

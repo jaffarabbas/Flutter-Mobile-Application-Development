@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:provider_state_mangement/pages/count.dart';
 import 'package:provider_state_mangement/pages/dark_theme_screen.dart';
-import 'package:provider_state_mangement/pages/favourite_screen.dart';
 import 'package:provider_state_mangement/provider/count_provider.dart';
 import 'package:provider_state_mangement/provider/favourite_provider.dart';
-import 'package:provider_state_mangement/provider/provider_list.dart';
 import 'package:provider_state_mangement/provider/slider_provider.dart';
 
 import 'provider/theme_changer.dart';

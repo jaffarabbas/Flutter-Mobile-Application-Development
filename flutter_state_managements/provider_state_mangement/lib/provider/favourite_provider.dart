@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 
 class FavouriteProvider with ChangeNotifier{
-  List<int> _seletItem = [];
+  final List<int> _seletItem = [];
   List<int> get seletItem => _seletItem;
 
   void setSelectItem(int index){

@@ -31,7 +31,7 @@ class _CountPageState extends State<CountPage> {
               builder: (context, value, child) {
                 return Text(
                   value.count.toString(),
-                  style: TextStyle(fontSize: 20),
+                  style: const TextStyle(fontSize: 20),
                 );
               },
             ),
@@ -59,14 +59,14 @@ class _CountPageState extends State<CountPage> {
                     alignment: Alignment.center,
                     height: 200,
                     color: Colors.red.withOpacity(value.value),
-                    child: Text('Container 1'),
+                    child: const Text('Container 1'),
                   )),
                   Expanded(
                       child: Container(
                     alignment: Alignment.center,
                     height: 200,
                     color: Colors.green.withOpacity(value.value),
-                    child: Text('Container 2'),
+                    child: const Text('Container 2'),
                   )),
                 ],
               );
