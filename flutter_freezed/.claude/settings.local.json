@@ -2,7 +2,8 @@
   "permissions": {
     "allow": [
       "Bash(dart run build_runner build)",
-      "Bash(flutter pub get)"
+      "Bash(flutter pub get)",
+      "Bash(if not exist libproviders mkdir libproviders)"
     ],
     "deny": [],
     "ask": []
