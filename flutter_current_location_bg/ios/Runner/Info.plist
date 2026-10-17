@@ -10,6 +10,13 @@
 	<string>Your location is recorded during a ride to build an accurate route.</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
 	<string>Allow "Always" so the ride keeps recording while the screen is locked or the app is in the background.</string>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsLocalNetworking</key>
+		<true/>
+	</dict>
+	<key>NSLocalNetworkUsageDescription</key>
+	<string>Rides are uploaded to the sync server you configure, which may be on your local network.</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>location</string>

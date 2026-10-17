@@ -31,6 +31,24 @@ final class LocationTracker: NSObject, CLLocationManagerDelegate, FlutterStreamH
     UserDefaults.standard.string(forKey: LocationTracker.activeRideKey)
   }
 
+  private static let allowMockKey = "tracker.test.allow_mock"
+
+  /// Desk-testing switch (Xcode "Simulate Location"). Always false outside DEBUG builds.
+  var allowMock: Bool {
+    get {
+      #if DEBUG
+      return UserDefaults.standard.bool(forKey: LocationTracker.allowMockKey)
+      #else
+      return false
+      #endif
+    }
+    set {
+      #if DEBUG
+      UserDefaults.standard.set(newValue, forKey: LocationTracker.allowMockKey)
+      #endif
+    }
+  }
+
   // MARK: - Ride control
 
   func startRide(_ id: String) {
@@ -46,6 +64,8 @@ final class LocationTracker: NSObject, CLLocationManagerDelegate, FlutterStreamH
     if let id = rideId ?? activeRideId { db.endRide(id, endedAt: nowMs()) }
     UserDefaults.standard.removeObject(forKey: LocationTracker.activeRideKey)
     rideId = nil
+    // Upload the "ended" status + last points, inside a background task.
+    SyncManager.shared.syncAfterStop()
   }
 
   /// Called at launch (including a background relaunch by significant-change
@@ -84,6 +104,7 @@ final class LocationTracker: NSObject, CLLocationManagerDelegate, FlutterStreamH
     let accuracy: Double? = loc.horizontalAccuracy >= 0 ? loc.horizontalAccuracy : nil
     let speed: Double? = loc.speed >= 0 ? loc.speed : nil
     let recordedAt = Int64(loc.timestamp.timeIntervalSince1970 * 1000)
+    filter.allowMock = allowMock
     let reason = filter.evaluate(
       lat: loc.coordinate.latitude, lng: loc.coordinate.longitude,
       accuracy: accuracy, speed: speed, isMocked: mocked, recordedAt: recordedAt)
@@ -104,6 +125,8 @@ final class LocationTracker: NSObject, CLLocationManagerDelegate, FlutterStreamH
       recordedAt: recordedAt)
     db.insertPoint(point)
     eventSink?(point.toMap())
+    // Non-blocking; throttled to ~one pass per 10 s on the sync queue.
+    SyncManager.shared.requestSync(force: false)
   }
 
   // MARK: - Permissions: When In Use -> Always

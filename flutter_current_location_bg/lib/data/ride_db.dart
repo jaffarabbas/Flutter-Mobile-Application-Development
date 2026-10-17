@@ -13,6 +13,10 @@ class Ride {
   final int goodPoints;
   final double distanceM;
 
+  /// rides.synced = 1 (the current status is on the server).
+  final bool synced;
+  final int syncedPoints;
+
   const Ride({
     required this.id,
     required this.startedAt,
@@ -21,7 +25,11 @@ class Ride {
     required this.totalPoints,
     required this.goodPoints,
     required this.distanceM,
+    this.synced = false,
+    this.syncedPoints = 0,
   });
+
+  RideSyncInfo get syncInfo => RideSyncInfo(synced, syncedPoints, totalPoints);
 
   bool get isActive => status == 'active';
   int get filteredPoints => totalPoints - goodPoints;
@@ -40,6 +48,16 @@ class RideStats {
   final double? lastAccuracy;
   const RideStats(this.total, this.good, this.filtered, this.lastAccuracy);
   static const empty = RideStats(0, 0, 0, null);
+}
+
+/// Upload progress of one ride.
+class RideSyncInfo {
+  final bool rideSynced;
+  final int syncedPoints;
+  final int totalPoints;
+  const RideSyncInfo(this.rideSynced, this.syncedPoints, this.totalPoints);
+
+  bool get isComplete => rideSynced && syncedPoints >= totalPoints;
 }
 
 /// Read-only access to the SQLite file owned by native code.
@@ -66,7 +84,8 @@ class RideDb {
     final rows = await d.rawQuery('''
       SELECT r.*,
         (SELECT COUNT(*) FROM points p WHERE p.ride_id = r.id) AS total,
-        (SELECT COUNT(*) FROM points p WHERE p.ride_id = r.id AND p.is_filtered = 0) AS good
+        (SELECT COUNT(*) FROM points p WHERE p.ride_id = r.id AND p.is_filtered = 0) AS good,
+        (SELECT COUNT(*) FROM points p WHERE p.ride_id = r.id AND p.synced = 1) AS synced_pts
       FROM rides r ORDER BY r.started_at DESC
     ''');
     final result = <Ride>[];
@@ -80,6 +99,8 @@ class RideDb {
         totalPoints: r['total'] as int,
         goodPoints: r['good'] as int,
         distanceM: distanceOf(await points(id, goodOnly: true)),
+        synced: (r['synced'] as int? ?? 0) != 0,
+        syncedPoints: r['synced_pts'] as int,
       ));
     }
     return result;
@@ -118,6 +139,19 @@ class RideDb {
     final good = r['good'] as int;
     return RideStats(
         total, good, total - good, (r['last_acc'] as num?)?.toDouble());
+  }
+
+  static Future<RideSyncInfo> syncInfo(String rideId) async {
+    final d = await db;
+    final rows = await d.rawQuery('''
+      SELECT
+        (SELECT synced FROM rides WHERE id = ?1) AS ride_synced,
+        (SELECT COUNT(*) FROM points WHERE ride_id = ?1 AND synced = 1) AS synced_pts,
+        (SELECT COUNT(*) FROM points WHERE ride_id = ?1) AS total
+    ''', [rideId]);
+    final r = rows.first;
+    return RideSyncInfo((r['ride_synced'] as int? ?? 0) != 0,
+        r['synced_pts'] as int, r['total'] as int);
   }
 
   /// Total Haversine distance in meters along the given points.

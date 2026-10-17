@@ -13,6 +13,7 @@ import UIKit
 
     GeneratedPluginRegistrant.register(with: self)
     registerTrackerChannels()
+    SyncManager.shared.requestSync(force: false) // app open (off the main thread)
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
   }
 
@@ -20,6 +21,7 @@ import UIKit
     guard let registrar = registrar(forPlugin: "RideTracker") else { return }
     let messenger = registrar.messenger()
     let tracker = LocationTracker.shared
+    let sync = SyncManager.shared
 
     FlutterEventChannel(name: "tracker/points", binaryMessenger: messenger)
       .setStreamHandler(tracker)
@@ -48,6 +50,26 @@ import UIKit
           result(tracker.permissionStatus())
         case "requestPermissions":
           tracker.requestPermissions(result)
+        case "getAllowMock":
+          result(tracker.allowMock)
+        case "setAllowMock":
+          let allow = (call.arguments as? [String: Any])?["allow"] as? Bool ?? false
+          tracker.allowMock = allow
+          result(tracker.allowMock)
+        case "getSyncConfig":
+          result(sync.configMap())
+        case "setSyncConfig":
+          let args = call.arguments as? [String: Any] ?? [:]
+          sync.updateConfig(
+            baseUrl: args["baseUrl"] as? String ?? "",
+            apiKey: args["apiKey"] as? String ?? "",
+            enabled: args["enabled"] as? Bool ?? false)
+          result(sync.configMap())
+        case "syncNow":
+          // Status maps are built off the main thread; reply on it.
+          sync.requestSync(force: true) { s in DispatchQueue.main.async { result(s) } }
+        case "getSyncStatus":
+          sync.statusAsync { s in DispatchQueue.main.async { result(s) } }
         case "openBatteryOptimizationSettings":
           // No battery-optimization screen on iOS; open the app's settings instead.
           if let url = URL(string: UIApplication.openSettingsURLString) {

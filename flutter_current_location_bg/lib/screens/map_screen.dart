@@ -7,6 +7,7 @@ import 'package:latlong2/latlong.dart';
 import '../data/gpx.dart';
 import '../data/ride_db.dart';
 import '../tracker/tracker_channel.dart';
+import 'sync_screen.dart';
 
 class MapScreen extends StatefulWidget {
   final String rideId;
@@ -21,6 +22,8 @@ class _MapScreenState extends State<MapScreen> {
   final List<TrackPoint> _points = [];
   final Set<String> _ids = {};
   StreamSubscription<TrackPoint>? _sub;
+  RideSyncInfo? _syncInfo;
+  Timer? _syncTimer;
 
   bool _loading = true;
   bool _active = false;
@@ -35,10 +38,19 @@ class _MapScreenState extends State<MapScreen> {
     // Subscribe before loading so no point falls between the DB read and the stream.
     _sub = TrackerChannel.points.listen(_onLivePoint);
     _load();
+    _loadSync();
+    _syncTimer =
+        Timer.periodic(const Duration(seconds: 5), (_) => _loadSync());
+  }
+
+  Future<void> _loadSync() async {
+    final info = await RideDb.syncInfo(widget.rideId);
+    if (mounted) setState(() => _syncInfo = info);
   }
 
   @override
   void dispose() {
+    _syncTimer?.cancel();
     _sub?.cancel();
     super.dispose();
   }
@@ -103,6 +115,11 @@ class _MapScreenState extends State<MapScreen> {
       appBar: AppBar(
         title: Text(_active ? 'Live ride' : 'Ride map'),
         actions: [
+          if (_syncInfo != null)
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8),
+              child: Center(child: RideSyncBadge(_syncInfo!)),
+            ),
           Builder(
             builder: (ctx) => PopupMenuButton<bool>(
               icon: const Icon(Icons.ios_share),

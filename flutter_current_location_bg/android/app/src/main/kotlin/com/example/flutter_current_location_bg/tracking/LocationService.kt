@@ -72,6 +72,7 @@ class LocationService : Service() {
                 // Service is not alive (e.g. killed and not restarted): close the ride directly.
                 if (rideId != null) TrackerDb.get(context).endRide(rideId, System.currentTimeMillis())
                 setActiveRideId(context, null)
+                SyncManager.syncAfterStop(context)
                 return
             }
             context.startService(Intent(context, LocationService::class.java).setAction(ACTION_STOP))
@@ -171,6 +172,7 @@ class LocationService : Service() {
         val mocked = if (Build.VERSION.SDK_INT >= 31) loc.isMock else @Suppress("DEPRECATION") loc.isFromMockProvider
         val accuracy = if (loc.hasAccuracy()) loc.accuracy.toDouble() else null
         val speed = if (loc.hasSpeed()) loc.speed.toDouble() else null
+        filter.allowMock = TestMode.allowMock(this) // read per fix so the switch applies mid-ride
         val reason = filter.evaluate(loc.latitude, loc.longitude, accuracy, speed, mocked, loc.time)
 
         val point = TrackPoint(
@@ -194,6 +196,8 @@ class LocationService : Service() {
             Log.e(TAG, "insert failed", e)
         }
         PointBus.publish(point)
+        // Non-blocking; throttled to ~one pass per 10 s on the sync thread.
+        SyncManager.requestSync(this)
     }
 
     private fun stopRide() {
@@ -202,6 +206,8 @@ class LocationService : Service() {
         if (id != null) db.endRide(id, System.currentTimeMillis())
         setActiveRideId(this, null)
         rideId = null
+        // Runs on SyncManager's process-scoped thread, so it outlives this service.
+        SyncManager.syncAfterStop(this)
         releaseWakeLock()
         stopForeground(STOP_FOREGROUND_REMOVE)
         isRunning = false

@@ -52,6 +52,63 @@ class TrackPoint {
   DateTime get time => DateTime.fromMillisecondsSinceEpoch(recordedAt);
 }
 
+/// Native sync settings (`getSyncConfig` / `setSyncConfig`).
+class SyncConfig {
+  final String baseUrl;
+  final String apiKey;
+  final bool enabled;
+  final String deviceId;
+
+  const SyncConfig({
+    required this.baseUrl,
+    required this.apiKey,
+    required this.enabled,
+    required this.deviceId,
+  });
+
+  factory SyncConfig.fromMap(Map<dynamic, dynamic> m) => SyncConfig(
+        baseUrl: m['baseUrl'] as String? ?? '',
+        apiKey: m['apiKey'] as String? ?? '',
+        enabled: m['enabled'] == true,
+        deviceId: m['deviceId'] as String? ?? '',
+      );
+}
+
+/// Native sync state (`getSyncStatus` / `syncNow`). Counts come from SQL.
+class SyncStatus {
+  final bool enabled;
+  final String deviceId;
+  final int pendingRides;
+  final int pendingPoints;
+
+  /// Epoch ms of the last fully successful pass, or null if never.
+  final int? lastSyncAt;
+  final String? lastError;
+  final bool isSyncing;
+
+  const SyncStatus({
+    required this.enabled,
+    required this.deviceId,
+    required this.pendingRides,
+    required this.pendingPoints,
+    this.lastSyncAt,
+    this.lastError,
+    required this.isSyncing,
+  });
+
+  factory SyncStatus.fromMap(Map<dynamic, dynamic> m) => SyncStatus(
+        enabled: m['enabled'] == true,
+        deviceId: m['deviceId'] as String? ?? '',
+        pendingRides: (m['pendingRides'] as num? ?? 0).toInt(),
+        pendingPoints: (m['pendingPoints'] as num? ?? 0).toInt(),
+        lastSyncAt: (m['lastSyncAt'] as num?)?.toInt(),
+        lastError: m['lastError'] as String?,
+        isSyncing: m['isSyncing'] == true,
+      );
+
+  bool get hasPending => pendingRides > 0 || pendingPoints > 0;
+}
+
 class TrackingState {
   final bool tracking;
   final String? rideId;
@@ -91,6 +148,38 @@ class TrackerChannel {
   static Future<Map<String, dynamic>> getPermissionStatus() async =>
       await _control.invokeMapMethod<String, dynamic>('getPermissionStatus') ??
       {};
+
+  /// Debug builds only: let mocked fixes pass the filter (still stored with
+  /// is_mocked = 1) so routes can be simulated at a desk. Native ignores it in release.
+  static Future<bool> getAllowMock() async =>
+      await _control.invokeMethod<bool>('getAllowMock') ?? false;
+
+  static Future<bool> setAllowMock(bool allow) async =>
+      await _control.invokeMethod<bool>('setAllowMock', {'allow': allow}) ??
+      false;
+
+  // --- Server sync (native owns the upload; see docs/SYNC_API.md) ---
+
+  static Future<SyncConfig> getSyncConfig() async => SyncConfig.fromMap(
+      await _control.invokeMapMethod<String, dynamic>('getSyncConfig') ?? {});
+
+  /// Native trims the URL, strips a trailing `/` and clears a stored 400 block.
+  static Future<SyncConfig> setSyncConfig({
+    required String baseUrl,
+    required String apiKey,
+    required bool enabled,
+  }) async =>
+      SyncConfig.fromMap(await _control.invokeMapMethod<String, dynamic>(
+              'setSyncConfig',
+              {'baseUrl': baseUrl, 'apiKey': apiKey, 'enabled': enabled}) ??
+          {});
+
+  /// Forced pass (ignores throttle/backoff); completes when the pass is done.
+  static Future<SyncStatus> syncNow() async => SyncStatus.fromMap(
+      await _control.invokeMapMethod<String, dynamic>('syncNow') ?? {});
+
+  static Future<SyncStatus> getSyncStatus() async => SyncStatus.fromMap(
+      await _control.invokeMapMethod<String, dynamic>('getSyncStatus') ?? {});
 
   static Future<void> openBatteryOptimizationSettings() =>
       _control.invokeMethod('openBatteryOptimizationSettings');

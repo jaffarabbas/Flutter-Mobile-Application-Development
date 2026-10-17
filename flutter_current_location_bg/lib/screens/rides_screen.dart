@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../data/ride_db.dart';
 import 'map_screen.dart';
+import 'sync_screen.dart';
 
 class RidesScreen extends StatefulWidget {
   const RidesScreen({super.key});
@@ -65,6 +66,7 @@ class _RidesScreenState extends State<RidesScreen> {
                             '${(r.distanceM / 1000).toStringAsFixed(2)} km · '
                             '${r.totalPoints} pts (${r.filteredPoints} filtered)'
                             '${r.isActive ? ' · ACTIVE' : ''}'),
+                        trailing: RideSyncBadge(r.syncInfo),
                         onTap: () async {
                           await Navigator.push(
                               context,

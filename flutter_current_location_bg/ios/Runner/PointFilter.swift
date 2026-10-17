@@ -22,6 +22,9 @@ enum FilterConfig {
 final class PointFilter {
   var lastGood: GoodFix?
 
+  /// Debug builds only (see LocationTracker.allowMock): mocked points are still stored with is_mocked = 1.
+  var allowMock = false
+
   /// Returns the filter reason, or nil if the point is good.
   func evaluate(
     lat: Double, lng: Double, accuracy: Double?, speed: Double?,
@@ -37,7 +40,7 @@ final class PointFilter {
     lat: Double, lng: Double, accuracy: Double?, speed: Double?,
     isMocked: Bool, recordedAt: Int64
   ) -> String? {
-    if isMocked { return "mocked" }
+    if isMocked && !allowMock { return "mocked" }
     guard let accuracy = accuracy, accuracy <= FilterConfig.maxAccuracyM else { return "low_accuracy" }
     // The first good point of a ride is always accepted so the route has an anchor.
     guard let prev = lastGood else { return nil }

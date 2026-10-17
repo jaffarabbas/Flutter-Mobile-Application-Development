@@ -1,13 +1,16 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
 
 import '../data/ride_db.dart';
+import '../data/sync_format.dart';
 import '../tracker/tracker_channel.dart';
 import 'map_screen.dart';
 import 'rides_screen.dart';
+import 'sync_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -22,7 +25,10 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
   String? _rideId;
   RideStats _stats = RideStats.empty;
   bool _busy = false;
+  bool _allowMock = false;
   StreamSubscription<TrackPoint>? _sub;
+  SyncStatus? _sync;
+  Timer? _syncTimer;
 
   @override
   void initState() {
@@ -30,12 +36,16 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
     WidgetsBinding.instance.addObserver(this);
     _sub = TrackerChannel.points.listen(_onPoint);
     _refresh();
+    // Keeps the "Sync: … · last 12 s ago" line current.
+    _syncTimer =
+        Timer.periodic(const Duration(seconds: 5), (_) => _refreshSync());
   }
 
   @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
     _sub?.cancel();
+    _syncTimer?.cancel();
     super.dispose();
   }
 
@@ -49,16 +59,28 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
   /// mid-ride picks the active ride back up.
   Future<void> _refresh() async {
     final perm = await TrackerChannel.getPermissionStatus();
+    final allowMock = kDebugMode && await TrackerChannel.getAllowMock();
     final t = await TrackerChannel.isTracking();
     final stats =
         t.rideId == null ? RideStats.empty : await RideDb.stats(t.rideId!);
     if (!mounted) return;
     setState(() {
       _perm = perm;
+      _allowMock = allowMock;
       _tracking = t.tracking;
       _rideId = t.rideId;
       _stats = stats;
     });
+    await _refreshSync();
+  }
+
+  Future<void> _refreshSync() async {
+    try {
+      final s = await TrackerChannel.getSyncStatus();
+      if (mounted) setState(() => _sync = s);
+    } catch (_) {
+      // Status is informational only.
+    }
   }
 
   void _onPoint(TrackPoint p) {
@@ -126,6 +148,10 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
     ]);
   }
 
+  Widget _syncLine() => Text(syncSummary(_sync),
+      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+          color: _sync?.lastError != null ? Colors.red : null));
+
   @override
   Widget build(BuildContext context) {
     final isAndroid = Platform.isAndroid;
@@ -133,6 +159,15 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
       appBar: AppBar(
         title: const Text('Ride Tracker'),
         actions: [
+          IconButton(
+            icon: Icon(syncIcon(_sync)),
+            tooltip: 'Server sync',
+            onPressed: () async {
+              await Navigator.push(context,
+                  MaterialPageRoute(builder: (_) => const SyncScreen()));
+              _refreshSync();
+            },
+          ),
           IconButton(
             icon: const Icon(Icons.list),
             tooltip: 'Rides',
@@ -170,6 +205,18 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                   child: const Text('Battery optimization'),
                 ),
             ]),
+            if (kDebugMode)
+              SwitchListTile(
+                contentPadding: EdgeInsets.zero,
+                title: const Text('Allow mock locations (testing)'),
+                subtitle: const Text(
+                    'Debug builds only. Mocked points are still stored with is_mocked = 1.'),
+                value: _allowMock,
+                onChanged: (v) async {
+                  final now = await TrackerChannel.setAllowMock(v);
+                  if (mounted) setState(() => _allowMock = now);
+                },
+              ),
             const Divider(height: 32),
             SizedBox(
               height: 56,
@@ -182,6 +229,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
               ),
             ),
             const SizedBox(height: 16),
+            if (_rideId == null) _syncLine(),
             if (_rideId != null) ...[
               Text('Ride: $_rideId', style: const TextStyle(fontSize: 12)),
               const SizedBox(height: 8),
@@ -190,6 +238,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
               Text('Filtered points: ${_stats.filtered}'),
               Text('Last accuracy: '
                   '${_stats.lastAccuracy?.toStringAsFixed(1) ?? '-'} m'),
+              _syncLine(),
               const SizedBox(height: 8),
               OutlinedButton.icon(
                 icon: const Icon(Icons.map),

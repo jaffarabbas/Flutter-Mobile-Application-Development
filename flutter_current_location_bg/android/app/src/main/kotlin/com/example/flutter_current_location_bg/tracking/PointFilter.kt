@@ -31,6 +31,9 @@ object FilterConfig {
 class PointFilter {
     var lastGood: GoodFix? = null
 
+    /** Debug builds only (see TestMode): mocked points are still stored with is_mocked = 1. */
+    var allowMock = false
+
     /** Returns the filter reason, or null if the point is good. */
     fun evaluate(
         lat: Double,
@@ -44,7 +47,7 @@ class PointFilter {
         val dist = if (prev == null) 0.0 else haversine(prev.lat, prev.lng, lat, lng)
 
         val reason = when {
-            isMocked -> "mocked"
+            isMocked && !allowMock -> "mocked"
             accuracy == null || accuracy > FilterConfig.MAX_ACCURACY_M -> "low_accuracy"
             prev != null && impliedSpeed(prev, dist, recordedAt) > FilterConfig.MAX_SPEED_MPS -> "speed_jump"
             // The first good point of a ride is always accepted so the route has an anchor.

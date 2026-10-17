@@ -5,10 +5,14 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
+import android.os.Handler
+import android.os.Looper
 import android.os.PowerManager
 import android.provider.Settings
 import com.example.flutter_current_location_bg.tracking.LocationService
 import com.example.flutter_current_location_bg.tracking.PointBus
+import com.example.flutter_current_location_bg.tracking.SyncManager
+import com.example.flutter_current_location_bg.tracking.TestMode
 import com.example.flutter_current_location_bg.tracking.TrackerDb
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
@@ -26,6 +30,8 @@ class MainActivity : FlutterActivity() {
         private const val REQ_BACKGROUND = 1002
         private const val REQ_NOTIFICATIONS = 1003
     }
+
+    private val main = Handler(Looper.getMainLooper())
 
     /** Pending result of requestPermissions(); completed when the whole chain finishes. */
     private var permissionResult: MethodChannel.Result? = null
@@ -45,6 +51,11 @@ class MainActivity : FlutterActivity() {
                 PointBus.listener = null
             }
         })
+    }
+
+    override fun onStart() {
+        super.onStart()
+        SyncManager.requestSync(this) // app open / back to foreground
     }
 
     override fun cleanUpFlutterEngine(flutterEngine: FlutterEngine) {
@@ -90,6 +101,24 @@ class MainActivity : FlutterActivity() {
                 permissionResult = result
                 requestNextPermission()
             }
+            "getAllowMock" -> result.success(TestMode.allowMock(this))
+            "setAllowMock" -> {
+                TestMode.setAllowMock(this, call.argument<Boolean>("allow") == true)
+                result.success(TestMode.allowMock(this))
+            }
+            "getSyncConfig" -> result.success(SyncManager.configMap(this))
+            "setSyncConfig" -> {
+                SyncManager.updateConfig(
+                    this,
+                    baseUrl = call.argument<String>("baseUrl") ?: "",
+                    apiKey = call.argument<String>("apiKey") ?: "",
+                    enabled = call.argument<Boolean>("enabled") == true,
+                )
+                result.success(SyncManager.configMap(this))
+            }
+            // Status maps are built off the main thread; reply on it.
+            "syncNow" -> SyncManager.requestSync(this, force = true) { s -> main.post { result.success(s) } }
+            "getSyncStatus" -> SyncManager.statusAsync(this) { s -> main.post { result.success(s) } }
             "openBatteryOptimizationSettings" -> {
                 openBatterySettings()
                 result.success(true)
