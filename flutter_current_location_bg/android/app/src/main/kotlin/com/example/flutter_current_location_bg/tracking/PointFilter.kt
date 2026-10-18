@@ -20,6 +20,12 @@ object FilterConfig {
 
     /** A move smaller than the fix's own accuracy is noise. Never use less than this floor. */
     const val MIN_MOVE_M = 3.0
+
+    /**
+     * At or above this reported (Doppler) speed the device is really moving, so the
+     * jitter check is skipped: at ~3 m/s with ~10 m accuracy it would reject 2 of 3 real fixes.
+     */
+    const val MOVING_SPEED_MPS = 1.5
 }
 
 /**
@@ -52,7 +58,8 @@ class PointFilter {
             prev != null && impliedSpeed(prev, dist, recordedAt) > FilterConfig.MAX_SPEED_MPS -> "speed_jump"
             // The first good point of a ride is always accepted so the route has an anchor.
             prev != null && speed != null && speed < FilterConfig.STATIONARY_SPEED_MPS -> "stationary"
-            prev != null && dist < max(accuracy, FilterConfig.MIN_MOVE_M) -> "jitter"
+            prev != null && (speed == null || speed < FilterConfig.MOVING_SPEED_MPS) &&
+                dist < max(accuracy, FilterConfig.MIN_MOVE_M) -> "jitter"
             else -> null
         }
         if (reason == null) lastGood = GoodFix(lat, lng, recordedAt)

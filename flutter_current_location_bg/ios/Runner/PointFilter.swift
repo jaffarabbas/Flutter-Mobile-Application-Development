@@ -13,6 +13,10 @@ enum FilterConfig {
 
   /// A move smaller than the fix's own accuracy is noise. Never use less than this floor.
   static let minMoveM = 3.0
+
+  /// At or above this reported (Doppler) speed the device is really moving, so the
+  /// jitter check is skipped: at ~3 m/s with ~10 m accuracy it would reject 2 of 3 real fixes.
+  static let movingSpeedMps = 1.5
 }
 
 /// Flags (never drops) suspicious fixes. Every distance check is measured
@@ -50,7 +54,8 @@ final class PointFilter {
       return "speed_jump"
     }
     if let speed = speed, speed < FilterConfig.stationarySpeedMps { return "stationary" }
-    if dist < max(accuracy, FilterConfig.minMoveM) { return "jitter" }
+    let isMoving = (speed ?? 0) >= FilterConfig.movingSpeedMps
+    if !isMoving && dist < max(accuracy, FilterConfig.minMoveM) { return "jitter" }
     return nil
   }
 

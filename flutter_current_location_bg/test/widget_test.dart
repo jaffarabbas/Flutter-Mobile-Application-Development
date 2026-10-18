@@ -36,4 +36,15 @@ void main() {
     expect(gpx, contains('<type>filtered:low_accuracy</type>'));
     expect(gpx, contains('lat="1.0" lon="2.0"'));
   });
+
+  test('GPX extensions carry machine-readable fields, nulls omitted', () {
+    final gpx = Gpx.build('r1', [_pt('a', 1, 2, filtered: true)]);
+    expect(gpx, contains('xmlns:rt="urn:ride-tracker:gpx:1"'));
+    expect(gpx, contains('<rt:ride id="r1"/>'));
+    expect(
+        gpx,
+        contains('<rt:fix id="a" recordedAt="1700000000000" accuracy="5.0" '
+            'isMocked="false" isFiltered="true" filterReason="low_accuracy"/>'));
+    expect(gpx, isNot(contains('speed="')));
+  });
 }

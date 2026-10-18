@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../data/gpx.dart';
 import '../data/ride_db.dart';
 import 'map_screen.dart';
 import 'sync_screen.dart';
@@ -17,6 +18,18 @@ class _RidesScreenState extends State<RidesScreen> {
   Future<void> _reload() async {
     setState(() => _rides = RideDb.rides());
     await _rides;
+  }
+
+  Future<void> _export(BuildContext ctx, String rideId,
+      {required bool includeAll}) async {
+    try {
+      await Gpx.exportAndShare(ctx, rideId, includeAll: includeAll);
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text('Export failed: $e')));
+      }
+    }
   }
 
   static String _fmtDuration(Duration d) {
@@ -66,7 +79,30 @@ class _RidesScreenState extends State<RidesScreen> {
                             '${(r.distanceM / 1000).toStringAsFixed(2)} km · '
                             '${r.totalPoints} pts (${r.filteredPoints} filtered)'
                             '${r.isActive ? ' · ACTIVE' : ''}'),
-                        trailing: RideSyncBadge(r.syncInfo),
+                        trailing: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            RideSyncBadge(r.syncInfo),
+                            // Builder: share sheet needs this button's own position (iPad).
+                            Builder(
+                              builder: (ctx) => PopupMenuButton<bool>(
+                                icon: const Icon(Icons.ios_share),
+                                tooltip: 'Export GPX',
+                                onSelected: (includeAll) => _export(
+                                    ctx, r.id,
+                                    includeAll: includeAll),
+                                itemBuilder: (_) => const [
+                                  PopupMenuItem(
+                                      value: false,
+                                      child: Text('GPX — good points')),
+                                  PopupMenuItem(
+                                      value: true,
+                                      child: Text('GPX — all points')),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
                         onTap: () async {
                           await Navigator.push(
                               context,

@@ -1,0 +1,5 @@
+# Never upload local secrets or build output; production env vars are set in Vercel.
+.env*
+!.env.example
+node_modules
+.next

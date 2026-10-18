@@ -7,7 +7,7 @@ plugins {
 
 android {
     namespace = "com.example.flutter_current_location_bg"
-    compileSdk = flutter.compileSdkVersion
+    compileSdk = 36 // Android 16
     ndkVersion = flutter.ndkVersion
 
     compileOptions {
@@ -25,7 +25,7 @@ android {
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.
         minSdk = 29 // Android 10+
-        targetSdk = flutter.targetSdkVersion
+        targetSdk = 36 // Android 16
         versionCode = flutter.versionCode
         versionName = flutter.versionName
     }

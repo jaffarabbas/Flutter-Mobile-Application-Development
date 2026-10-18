@@ -12,6 +12,8 @@ export async function getSqlPool() {
       database: process.env.DB_DATABASE ?? "test2",
       user: process.env.DB_USERNAME ?? "sa",
       password: process.env.DB_PASSWORD ?? "",
+      // Azure SQL serverless/free tier auto-pauses; the first connect can take ~1 min.
+      connectionTimeout: Number(process.env.DB_CONNECT_TIMEOUT_MS ?? 15000),
       options: {
         encrypt: (process.env.DB_ENCRYPT ?? "true") === "true",
         trustServerCertificate:
